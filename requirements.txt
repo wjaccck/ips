@@ -1,0 +1,24 @@
+django<1.9
+django-filter
+djangorestframework==3.3.2
+django-rest-swagger
+django-extensions
+wheel
+pydot
+netaddr
+django-cors-headers
+djangorestframework-filters
+celery<4.0
+django-celery
+redis
+django-vanilla-views
+django-bootstrap-pagination
+django-select2
+django-redis
+docker-py
+#python-ldap
+#django-auth-ldap
+#django-import-export
+
+# Should use pip wheel to install
+# mysql-python

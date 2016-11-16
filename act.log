@@ -1,0 +1,54 @@
+[2016-11-16 18:19:12,227] ERROR base.handle_uncaught_exception-[256] Internal Server Error: /api/item_list.json
+Traceback (most recent call last):
+  File "C:\work\open\ips\env\lib\site-packages\django\core\handlers\base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\work\open\ips\env\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\viewsets.py", line 87, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\views.py", line 466, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\views.py", line 463, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\mixins.py", line 20, in create
+    serializer.is_valid(raise_exception=True)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\serializers.py", line 213, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\serializers.py", line 407, in run_validation
+    value = self.to_internal_value(data)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\serializers.py", line 437, in to_internal_value
+    validated_value = field.run_validation(primitive_value)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\fields.py", line 482, in run_validation
+    value = self.to_internal_value(data)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\relations.py", line 463, in to_internal_value
+    for item in data
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\fields.py", line 516, in to_internal_value
+    cls=self.__class__.__name__
+NotImplementedError: StringRelatedField.to_internal_value() must be implemented.
+[2016-11-16 18:19:12,227] ERROR base.handle_uncaught_exception-[256] Internal Server Error: /api/item_list.json
+Traceback (most recent call last):
+  File "C:\work\open\ips\env\lib\site-packages\django\core\handlers\base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\work\open\ips\env\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\viewsets.py", line 87, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\views.py", line 466, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\views.py", line 463, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\mixins.py", line 20, in create
+    serializer.is_valid(raise_exception=True)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\serializers.py", line 213, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\serializers.py", line 407, in run_validation
+    value = self.to_internal_value(data)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\serializers.py", line 437, in to_internal_value
+    validated_value = field.run_validation(primitive_value)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\fields.py", line 482, in run_validation
+    value = self.to_internal_value(data)
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\relations.py", line 463, in to_internal_value
+    for item in data
+  File "C:\work\open\ips\env\lib\site-packages\rest_framework\fields.py", line 516, in to_internal_value
+    cls=self.__class__.__name__
+NotImplementedError: StringRelatedField.to_internal_value() must be implemented.
