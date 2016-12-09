@@ -97,15 +97,15 @@
             <li>
         {% endif %}
         <a href="">
-        <i class="icon-home"></i>
+        <i class="icon-grid"></i>
         <span class="title">服务器记录</span>
             <ul class="sub-menu">
                 <li>
-                    <a  href="{% url 'machine-list' 'hz'%} ">
+                    <a  href="{% url 'machine-list' %}?idc=hz">
                     杭州</a>
                 </li>
                 <li>
-                    <a  href="{% url 'machine-list' 'qs'%} ">
+                    <a  href="{% url 'machine-list' %}?idc=qs">
                     秋实</a>
                 </li>
             </ul>
@@ -118,15 +118,24 @@
             <li>
         {% endif %}
         <a href="">
-        <i class="icon-home"></i>
+        <i class=" icon-layers"></i>
         <span class="title">应用信息</span>
             <ul class="sub-menu">
+                <li>
+                    <a  href="{% url 'item-deploy-detail' %} ">
+                     部署概况
+                    </a>
+                </li>
                 <li>
                     <a  href="{% url 'item-list-list' %} ">
                      项目详情
                     </a>
                 </li>
-
+                <li>
+                    <a  href="{% url 'item-check-list' %} ">
+                     项目检测
+                    </a>
+                </li>
                 <li>
                     <a  href="{% url 'nginx-list' %} ">
                      杭州NGINX
@@ -141,9 +150,14 @@
             <li>
         {% endif %}
         <a href="">
-        <i class="icon-home"></i>
+        <i class=" icon-settings"></i>
         <span class="title">基础数据(杭州)</span>
             <ul class="sub-menu">
+                <li>
+                    <a  href="{% url 'fun-detail' %} ">
+                     反查
+                    </a>
+                </li>
                 <li>
                     <a  href="{% url 'item-name-list' %} ">
                      项目列表
@@ -166,6 +180,11 @@
                 <li>
                     <a  href="{% url 'application-list' %} ">
                      应用端口信息
+                    </a>
+                </li>
+                <li>
+                    <a  href="{% url 'redis-list' %} ">
+                     Redis 信息
                     </a>
                 </li>
                 <li>
@@ -308,6 +327,15 @@
                                 <div class="number">
 {#                                    <h3 class="font-blue-sharp">{{ env_list }}</h3>#}
                                     <small>环境数量</small>
+                                    <br>
+
+                                    </br>
+                                    {% for m in idc_detail %}
+                                        <br>
+                                                {{ m.name }}({{ m.number }})
+
+                                        </br>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -320,6 +348,19 @@
                                 <div class="number">
 {#                                    <h3 class="font-purple-soft">{{ module_list }}</h3>#}
                                     <small>模块</small>
+                                    <br>
+
+                                    </br>
+                                    {% for m in item_summary %}
+                                        <br>
+{#                                                <a href="{% url item-name-list %}?dev_owner={{ m.name }}">{{ m.name }}({{ m.number }})<a>#}
+                                            <a  href="{% url 'item-name-list' %}?dev_owner={{ m.name }} ">
+                                                {{ m.name }}({{ m.number }})
+                                            </a>
+                                        </br>
+
+                                    {% endfor %}
+
                                 </div>
                             </div>
 					    </div>

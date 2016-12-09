@@ -73,6 +73,9 @@
 									 端口
 								</th>
                                 <th>
+                                    slaveof
+                                </th>
+                                <th>
 									 备注
 								</th>
                                 <th>
@@ -94,6 +97,11 @@
                                         <td>{{ m.id }}</td>
                                         <td>{{ m.host.name }}</td>
                                         <td>{{ m.port }}</td>
+                                        <td>
+                                            {% for n in m.slaveof.all %}
+                                               {{ n }}<br>
+                                            {% endfor %}
+                                        </td>
                                         <td>{{ m.detail }}</td>
                                         <td>{{ m.created_date |date:'Y-m-d H:i:s' }}</td>
                                         {% if user.is_superuser %}

@@ -38,6 +38,12 @@ class Mysql_linksModelSelect2MultipleWidget(BaseModelSelect2MultipleWidget):
         'pk__startswith',
     ]
 
+class Redis_linksModelSelect2MultipleWidget(BaseModelSelect2MultipleWidget):
+    search_fields = [
+        'host__name__istartswith',
+        'pk__startswith',
+    ]
+
 class Codis_linksModelSelect2MultipleWidget(BaseModelSelect2MultipleWidget):
     search_fields = [
         'host__name__istartswith',
@@ -79,7 +85,7 @@ class IpModelSelect2Widget(BaseModelSelect2Widget):
 
 class Item_nameModelSelect2Widget(BaseModelSelect2Widget):
     search_fields = [
-        'content__istartswith',
+        'module__istartswith',
         'pk__startswith',
     ]
 
@@ -96,6 +102,12 @@ class Tech_typeModelSelect2Widget(BaseModelSelect2Widget):
     ]
 
 class TypeModelSelect2Widget(BaseModelSelect2Widget):
+    search_fields = [
+        'content__istartswith',
+        'pk__startswith',
+    ]
+
+class Check_TypeModelSelect2Widget(BaseModelSelect2Widget):
     search_fields = [
         'content__istartswith',
         'pk__startswith',

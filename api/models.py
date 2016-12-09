@@ -31,6 +31,7 @@ class Machine(CommonModel,IDC_BASE):
     sys_desc=models.CharField(max_length=50)
     major_release=models.CharField(max_length=50)
     idc=models.CharField(max_length=50,default='hz')
+    company=models.CharField(max_length=50,blank=True)
     def __unicode__(self):
         return self.name
 
@@ -59,7 +60,7 @@ class Type_name(CommonModel,API_BASE):
         return u'前端类型'
 
 class Nginx(CommonModel,ITEM_BASE):
-    host=models.ForeignKey(Ipv4Address)
+    host=models.ForeignKey(Ipv4Address,related_name='nginx_link')
     type=models.ForeignKey(Type_name)
     app_name=models.ManyToManyField(Site)
     file_name=models.CharField(max_length=200)
@@ -68,7 +69,7 @@ class Nginx(CommonModel,ITEM_BASE):
         return u'nginx详情'
 ### app info
 class Link_info(CommonModel):
-    host=models.ForeignKey(Ipv4Address)
+    # host=models.ForeignKey(Ipv4Address)
     port=models.CharField(max_length=50,default='0')
     detail=models.TextField(blank=True)
     def __unicode__(self):
@@ -89,6 +90,8 @@ class Tech(CommonModel,API_BASE):
 
 class Mysql(Link_info,API_BASE):
     name=models.CharField(max_length=50)
+    host=models.ForeignKey(Ipv4Address,related_name='mysql_link')
+    slaveof=models.ManyToManyField(Ipv4Address,blank=True,related_name='mysql_slave')
     def __unicode__(self):
         return "%s:%s/%s" %(self.host.name,self.port,self.name)
 
@@ -96,7 +99,18 @@ class Mysql(Link_info,API_BASE):
     def verbose():
         return u'数据库'
 
+# class Mysql_Cluster(CommonModel,API_BASE):
+#     master=models.ForeignKey(Mysql)
+#     slave=models.ManyToManyField(Mysql,blank=True)
+#     def __unicode__(self):
+#         return self.master
+#
+#     @staticmethod
+#     def verbose():
+#         return u'数据库集群'
+
 class Application(Link_info,API_BASE):
+    host=models.ForeignKey(Ipv4Address,related_name='app_link')
     def __unicode__(self):
         return "%s:%s/%s" %(self.host.name,self.port,self.detail)
 
@@ -104,54 +118,65 @@ class Application(Link_info,API_BASE):
     def verbose():
         return u'应用信息'
 
+class Redis(Link_info,API_BASE):
+    host=models.ForeignKey(Ipv4Address,related_name='redis_link')
+    slaveof=models.ManyToManyField(Ipv4Address,blank=True,related_name='redis_slave')
+    @staticmethod
+    def verbose():
+        return u'Redis'
+
 class Codis(Link_info,API_BASE):
-    pass
+    host=models.ForeignKey(Ipv4Address,related_name='codis_link')
+    slaveof=models.ManyToManyField(Ipv4Address,blank=True,related_name='codis_slave')
     @staticmethod
     def verbose():
         return u'Codis'
 
 class Sentinel(Link_info,API_BASE):
-    pass
-
+    host=models.ForeignKey(Ipv4Address,related_name='sentinel_link')
+    slaveof=models.ManyToManyField(Ipv4Address,blank=True,related_name='sentinel_slave')
     @staticmethod
     def verbose():
         return u'Sentinel'
 
 class Memcached(Link_info,API_BASE):
-    pass
+    host=models.ForeignKey(Ipv4Address,related_name='memcache_link')
     @staticmethod
     def verbose():
         return u'MC'
 
 class Es(Link_info,API_BASE):
-    pass
+    host=models.ForeignKey(Ipv4Address,related_name='es_link')
     @staticmethod
     def verbose():
         return u'ES'
 
 class Mcq(Link_info,API_BASE):
-    pass
+    host=models.ForeignKey(Ipv4Address,related_name='mcq_link')
     @staticmethod
     def verbose():
         return u'MCQ'
 
 class Tfs(Link_info,API_BASE):
-    pass
+    host=models.ForeignKey(Ipv4Address,related_name='tfs_link')
     @staticmethod
     def verbose():
         return u'TFS'
 class Item_name(CommonModel,API_BASE):
-    content=models.CharField(max_length=50)
+    content=models.CharField(max_length=50,db_index=True)
     module=models.CharField(max_length=50,blank=True,null=True)
     alias=models.CharField(max_length=50,blank=True,null=True)
-    dev_owner=models.CharField(max_length=200,blank=True,null=True)
+    dev_owner=models.CharField(max_length=200,blank=True,null=True,db_index=True)
     ops_owner=models.CharField(max_length=200,blank=True,null=True)
     test_owner=models.CharField(max_length=200,blank=True,null=True)
     location=models.CharField(max_length=250,blank=True,null=True)
     git_url=models.CharField(max_length=200,blank=True,null=True)
     remark=models.TextField(max_length=250,blank=True,null=True)
     def __unicode__(self):
-        return "%s-%s" %(self.content,self.module)
+        if self.module:
+            return "%s:%s" %(self.content,self.module)
+        else:
+            return self.module
 
     @staticmethod
     def verbose():
@@ -160,17 +185,19 @@ class Item_name(CommonModel,API_BASE):
 
 class Item_list(CommonModel,ITEM_BASE):
     item=models.ForeignKey(Item_name)
-    app=models.ForeignKey(Site,blank=True,null=True)
-    tech=models.ForeignKey(Tech)
-    front=models.ManyToManyField(Ipv4Address,blank=True)
-    app_link=models.ManyToManyField(Application,blank=True)
-    mysql_link=models.ManyToManyField(Mysql,blank=True)
-    codis_link=models.ManyToManyField(Codis,blank=True)
-    sentinel=models.ManyToManyField(Sentinel,blank=True)
-    memcache=models.ManyToManyField(Memcached,blank=True)
-    es=models.ManyToManyField(Es,blank=True)
-    mcq=models.ManyToManyField(Mcq,blank=True)
-    tfs=models.ManyToManyField(Tfs,blank=True)
+    app=models.ForeignKey(Site,blank=True,null=True,related_name='site')
+    upstream=models.CharField(max_length=200,blank=True)
+    tech=models.ForeignKey(Tech,related_name='tech')
+    front=models.ManyToManyField(Ipv4Address,blank=True,related_name='front')
+    app_link=models.ManyToManyField(Application,blank=True,related_name='app')
+    mysql_link=models.ManyToManyField(Mysql,blank=True,related_name='mysql')
+    redis_link=models.ManyToManyField(Redis,blank=True,related_name='redis')
+    codis_link=models.ManyToManyField(Codis,blank=True,related_name='codis')
+    sentinel=models.ManyToManyField(Sentinel,blank=True,related_name='sentinel')
+    memcache=models.ManyToManyField(Memcached,blank=True,related_name='memcache')
+    es=models.ManyToManyField(Es,blank=True,related_name='es')
+    mcq=models.ManyToManyField(Mcq,blank=True,related_name='mcq')
+    tfs=models.ManyToManyField(Tfs,blank=True,related_name='tfs')
     app_location=models.CharField(max_length=200,blank=True,null=True)
     remark=models.TextField(blank=True)
 
@@ -178,13 +205,45 @@ class Item_list(CommonModel,ITEM_BASE):
     def verbose():
         return u'项目部署详情'
 
-class Kvm_list(CommonModel,APPLY_BASE):
-    idc=models.CharField(max_length=200)
-    zone=models.CharField(max_length=200)
-    item=models.ForeignKey(Item_name)
+class Check_type(CommonModel,API_BASE):
+    content=models.CharField(max_length=50,unique=True)
+    alias=models.CharField(max_length=50,unique=True)
+    def __unicode__(self):
+        return self.content
+
     @staticmethod
     def verbose():
-        return u'KVM'
+        return u'测试类型'
+
+class Item_check(CommonModel,ITEM_BASE):
+    Check_status = (
+         (0, u'正常'),
+         (1, u'异常'),
+    )
+    item=models.ForeignKey(Item_name)
+    type=models.ForeignKey(Check_type)
+    status=models.IntegerField(choices=Check_status)
+    method=models.CharField(max_length=50,blank=True)
+    headers=models.CharField(max_length=250,blank=True)
+    port=models.IntegerField()
+    content=models.CharField(max_length=250,blank=True)
+    link_address=models.CharField(max_length=250)
+    retcode=models.CharField(max_length=50,blank=True)
+    result=models.CharField(max_length=250,blank=True)
+    remark=models.TextField(blank=True)
+
+    @staticmethod
+    def verbose():
+        return u'测试类型'
+
+
+# class Kvm_list(CommonModel,APPLY_BASE):
+#     idc=models.CharField(max_length=200)
+#     zone=models.CharField(max_length=200)
+#     item=models.ForeignKey(Item_name)
+#     @staticmethod
+#     def verbose():
+#         return u'KVM'
 class Docker_list(CommonModel,APPLY_BASE):
     host=models.ForeignKey(Ipv4Address)
     name=models.CharField(max_length=200,blank= True)

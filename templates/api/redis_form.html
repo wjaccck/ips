@@ -51,6 +51,11 @@
                                                     <label for="{{ field.id_for_label }}" class="col-md-2 control-label">{{ field.label }}</label>
                                                     <div class="col-md-8">
                                                         {{ field }}
+{#                                                        {% if form.errors %}#}
+{#                                                            {% if form.errors|get_digit:field.name %}#}
+{#                                                                <font color="#FF000000"> {{ form.errors|get_digit:field.name }} </font>#}
+{#                                                            {% endif %}#}
+{#                                                        {% endif %}#}
                                                     </div>
                                                 </div>
 
@@ -62,7 +67,7 @@
 
                                         <p class="text-center">
                                             <input type="submit" class="btn btn-primary" value="{{ btnsubmit }}" />
-                                            <a href="{% url 'mysql-list' %}" class="btn btn-default"> {{ btncancel }} </a>
+                                            <a href="{% url 'redis-list' %}" class="btn btn-default"> {{ btncancel }} </a>
                                         </p>
                                 </form>
 						</div>

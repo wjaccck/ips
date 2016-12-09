@@ -8,7 +8,7 @@ from .models import *
 from .serializers import *
 # from rest_framework_filters.backends import DjangoFilterBackend
 
-class MachineViewSet(viewsets.ModelViewSet):
+class Machine_ApiViewSet(viewsets.ModelViewSet):
     http_method_names = [ 'get','post','patch']
     queryset = Machine.objects.all()
     serializer_class = MachineSerializer
@@ -17,8 +17,8 @@ class MachineViewSet(viewsets.ModelViewSet):
     filter_fields = ('name','ips')
     search_fields = ('^name', )
 
-class SiteViewSet(viewsets.ModelViewSet):
-    http_method_names = [ 'get','post','patch']
+class Site_ApiViewSet(viewsets.ModelViewSet):
+    http_method_names = [ 'get','post']
     queryset = Site.objects.all()
     serializer_class = Siteserializers
     permission_classes = (permissions.DjangoModelPermissions,)
@@ -26,8 +26,8 @@ class SiteViewSet(viewsets.ModelViewSet):
     filter_fields = ('content',)
     search_fields = ('^content', )
 
-class NginxViewSet(viewsets.ModelViewSet):
-    http_method_names = [ 'get','post','patch','delete']
+class Nginx_ApiViewSet(viewsets.ModelViewSet):
+    http_method_names = [ 'get','post']
     queryset = Nginx.objects.all()
     serializer_class = Nginxserializers
     permission_classes = (permissions.DjangoModelPermissions,)
@@ -37,8 +37,8 @@ class NginxViewSet(viewsets.ModelViewSet):
 
 
 
-class TechViewSet(viewsets.ModelViewSet):
-    http_method_names = [ 'get','post','patch']
+class Tech_ApiViewSet(viewsets.ModelViewSet):
+    http_method_names = [ 'get','post']
     queryset = Tech.objects.all()
     serializer_class = Techserializers
     permission_classes = (permissions.DjangoModelPermissions,)
@@ -46,8 +46,8 @@ class TechViewSet(viewsets.ModelViewSet):
     filter_fields = ('content',)
     search_fields = ('^content', )
 
-class MysqlViewSet(viewsets.ModelViewSet):
-    http_method_names = [ 'get','post','patch']
+class Mysql_ApiViewSet(viewsets.ModelViewSet):
+    http_method_names = [ 'get','post']
     queryset = Mysql.objects.all()
     serializer_class = Mysqlserializers
     permission_classes = (permissions.DjangoModelPermissions,)
@@ -55,8 +55,8 @@ class MysqlViewSet(viewsets.ModelViewSet):
     filter_fields = ('host',)
     search_fields = ('^host__name', )
 
-class ApplicationViewSet(viewsets.ModelViewSet):
-    http_method_names = [ 'get','post','patch']
+class Application_ApiViewSet(viewsets.ModelViewSet):
+    http_method_names = [ 'get','post']
     queryset = Application.objects.all()
     serializer_class = Applicationserializers
     permission_classes = (permissions.DjangoModelPermissions,)
@@ -64,8 +64,8 @@ class ApplicationViewSet(viewsets.ModelViewSet):
     filter_fields = ('host',)
     search_fields = ('^host__name', )
 
-class CodisViewSet(viewsets.ModelViewSet):
-    http_method_names = [ 'get','post','patch']
+class Codis_ApiViewSet(viewsets.ModelViewSet):
+    http_method_names = [ 'get','post']
     queryset = Codis.objects.all()
     serializer_class = Codisserializers
     permission_classes = (permissions.DjangoModelPermissions,)
@@ -73,8 +73,8 @@ class CodisViewSet(viewsets.ModelViewSet):
     filter_fields = ('host',)
     search_fields = ('^host__name', )
 
-class SentinelViewSet(viewsets.ModelViewSet):
-    http_method_names = [ 'get','post','patch']
+class Sentinel_ApiViewSet(viewsets.ModelViewSet):
+    http_method_names = [ 'get','post']
     queryset = Sentinel.objects.all()
     serializer_class = Sentinelserializers
     permission_classes = (permissions.DjangoModelPermissions,)
@@ -82,8 +82,17 @@ class SentinelViewSet(viewsets.ModelViewSet):
     filter_fields = ('host',)
     search_fields = ('^host__name', )
 
-class MemcachedViewSet(viewsets.ModelViewSet):
-    http_method_names = [ 'get','post','patch']
+class Redis_ApiViewSet(viewsets.ModelViewSet):
+    http_method_names = [ 'get','post']
+    queryset = Redis.objects.all()
+    serializer_class = Redisserializers
+    permission_classes = (permissions.DjangoModelPermissions,)
+    filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, )
+    filter_fields = ('host',)
+    search_fields = ('^host__name', )
+
+class Memcached_ApiViewSet(viewsets.ModelViewSet):
+    http_method_names = [ 'get','post']
     queryset = Memcached.objects.all()
     serializer_class = Memcachedserializers
     permission_classes = (permissions.DjangoModelPermissions,)
@@ -91,8 +100,8 @@ class MemcachedViewSet(viewsets.ModelViewSet):
     filter_fields = ('host',)
     search_fields = ('^host__name', )
 
-class EsViewSet(viewsets.ModelViewSet):
-    http_method_names = [ 'get','post','patch']
+class Es_ApiViewSet(viewsets.ModelViewSet):
+    http_method_names = [ 'get','post']
     queryset = Es.objects.all()
     serializer_class = Esserializers
     permission_classes = (permissions.DjangoModelPermissions,)
@@ -100,8 +109,8 @@ class EsViewSet(viewsets.ModelViewSet):
     filter_fields = ('host',)
     search_fields = ('^host__name', )
 
-class McqViewSet(viewsets.ModelViewSet):
-    http_method_names = [ 'get','post','patch']
+class Mcq_ApiViewSet(viewsets.ModelViewSet):
+    http_method_names = [ 'get','post']
     queryset = Mcq.objects.all()
     serializer_class = Mcqserializers
     permission_classes = (permissions.DjangoModelPermissions,)
@@ -109,8 +118,8 @@ class McqViewSet(viewsets.ModelViewSet):
     filter_fields = ('host',)
     search_fields = ('^host__name', )
 
-class TfsViewSet(viewsets.ModelViewSet):
-    http_method_names = [ 'get','post','patch']
+class Tfs_ApiViewSet(viewsets.ModelViewSet):
+    http_method_names = [ 'get','post']
     queryset = Tfs.objects.all()
     serializer_class = Tfsserializers
     permission_classes = (permissions.DjangoModelPermissions,)
@@ -118,8 +127,8 @@ class TfsViewSet(viewsets.ModelViewSet):
     filter_fields = ('host',)
     search_fields = ('^host__name', )
 
-class Item_nameViewSet(viewsets.ModelViewSet):
-    http_method_names = [ 'get','post','patch']
+class Item_name_ApiViewSet(viewsets.ModelViewSet):
+    http_method_names = [ 'get','post']
     queryset = Item_name.objects.all()
     serializer_class = Item_nameserializers
     permission_classes = (permissions.DjangoModelPermissions,)
@@ -127,8 +136,8 @@ class Item_nameViewSet(viewsets.ModelViewSet):
     filter_fields = ('content',)
     search_fields = ('^content', )
 
-class Item_listViewSet(viewsets.ModelViewSet):
-    http_method_names = [ 'get','post','patch']
+class Item_list_ApiViewSet(viewsets.ModelViewSet):
+    http_method_names = [ 'get','post']
     queryset = Item_list.objects.all()
     serializer_class = Item_listserializers
     permission_classes = (permissions.DjangoModelPermissions,)
@@ -139,8 +148,8 @@ class Item_listViewSet(viewsets.ModelViewSet):
 
 
 
-class Type_nameViewSet(viewsets.ModelViewSet):
-    http_method_names = [ 'get','post','patch']
+class Type_name_ApiViewSet(viewsets.ModelViewSet):
+    http_method_names = [ 'get','post']
     queryset = Type_name.objects.all()
     serializer_class = Type_nameserializers
     permission_classes = (permissions.DjangoModelPermissions,)
@@ -153,7 +162,7 @@ class Type_nameViewSet(viewsets.ModelViewSet):
 
 
 
-class Ipv4AddressViewSet(viewsets.ModelViewSet):
+class Ipv4Address_ApiViewSet(viewsets.ModelViewSet):
     """
     This viewset automatically provides `list`, `create`, `retrieve`,
     `update` and `destroy` actions.
@@ -175,10 +184,10 @@ class Ipv4AddressViewSet(viewsets.ModelViewSet):
             creator = self.request.user,
             last_modified_by = self.request.user
         )
-        return super(Ipv4AddressViewSet, self).perform_create(serializer)
+        return super(Ipv4Address_ApiViewSet, self).perform_create(serializer)
 
 
-class Ipv4NetworkViewSet(viewsets.ModelViewSet):
+class Ipv4Network_ApiViewSet(viewsets.ModelViewSet):
     """
     This viewset automatically provides `list`, `create`, `retrieve`,
     `update` and `destroy` actions.
@@ -200,4 +209,4 @@ class Ipv4NetworkViewSet(viewsets.ModelViewSet):
             creator = self.request.user,
             last_modified_by = self.request.user
         )
-        return super(Ipv4NetworkViewSet, self).perform_create(serializer)
+        return super(Ipv4Network_ApiViewSet, self).perform_create(serializer)

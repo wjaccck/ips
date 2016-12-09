@@ -17,7 +17,7 @@ class LoginForm(AuthenticationForm):
 
 class MachineForm(forms.ModelForm):
     name=forms.CharField(label='name',max_length=100,widget=forms.TextInput({'class': 'form-control'}))
-    memory=forms.IntegerField(label='cpu',required=False,widget=forms.TextInput({'class': 'form-control'}))
+    memory=forms.IntegerField(label='memory',required=False,widget=forms.TextInput({'class': 'form-control'}))
     cpu=forms.IntegerField(label='cpu',required=False,widget=forms.TextInput({'class': 'form-control'}))
     product=forms.CharField(label='product',max_length=100,widget=forms.TextInput({'class': 'form-control'}))
     system_id=forms.CharField(label='system',max_length=50,widget=forms.TextInput({'class': 'form-control'}))
@@ -25,6 +25,8 @@ class MachineForm(forms.ModelForm):
     serial=forms.CharField(label='serial',required=False,max_length=200,widget=forms.TextInput({'class': 'form-control'}))
     major_release=forms.CharField(label='主版本',max_length=50,widget=forms.TextInput({'class': 'form-control'}))
     sys_desc=forms.CharField(label='详细版本',max_length=50,widget=forms.TextInput({'class': 'form-control'}))
+    idc=forms.CharField(label='数据中心',max_length=50,widget=forms.TextInput({'class': 'form-control'}))
+    company=forms.CharField(label='所属公司',max_length=50,widget=forms.TextInput({'class': 'form-control'}))
 
     class Meta:
         model = Machine
@@ -37,8 +39,10 @@ class MachineForm(forms.ModelForm):
             'system_id',
             'machine_id',
             'serial',
-            'sys_desc',
             'major_release',
+            'sys_desc',
+            'idc',
+            'company',
         )
         widgets = {
             'ips': IpsModelSelect2MultipleWidget,
@@ -98,9 +102,11 @@ class MysqlForm(forms.ModelForm):
             'host',
             'port',
             'detail',
+            'slaveof'
         )
         widgets = {
             'host':IpModelSelect2Widget,
+            'slaveof':IpsModelSelect2MultipleWidget,
         }
         exclude = ['created_date', 'modified_date']
 
@@ -131,9 +137,30 @@ class CodisForm(forms.ModelForm):
             'host',
             'port',
             'detail',
+            'slaveof',
         )
         widgets = {
             'host':IpModelSelect2Widget,
+             'slaveof':IpsModelSelect2MultipleWidget,
+        }
+        exclude = ['created_date', 'modified_date']
+
+
+class RedisForm(forms.ModelForm):
+    port = forms.CharField(label='port',   max_length=50,widget=forms.TextInput({'class': 'form-control'}))
+    detail = forms.CharField(label='detail',required=False, max_length=255,widget=forms.TextInput({'class': 'form-control'}))
+
+    class Meta:
+        model = Redis
+        fields = (
+            'host',
+            'port',
+            'detail',
+            'slaveof',
+        )
+        widgets = {
+            'host':IpModelSelect2Widget,
+             'slaveof':IpsModelSelect2MultipleWidget,
         }
         exclude = ['created_date', 'modified_date']
 
@@ -147,9 +174,11 @@ class SentinelForm(forms.ModelForm):
             'host',
             'port',
             'detail',
+            'slaveof',
         )
         widgets = {
             'host':IpModelSelect2Widget,
+             'slaveof':IpsModelSelect2MultipleWidget,
         }
         exclude = ['created_date', 'modified_date']
 
@@ -221,7 +250,7 @@ class TfsForm(forms.ModelForm):
 
 class Item_nameForm(forms.ModelForm):
     content = forms.CharField(label='content', max_length=50, widget=forms.TextInput({'class': 'form-control'}))
-    module = forms.CharField(label='module', max_length=50, widget=forms.TextInput({'class': 'form-control'}))
+    module = forms.CharField(label='module', required=False,max_length=50, widget=forms.TextInput({'class': 'form-control'}))
     alias = forms.CharField(label='alias',max_length=50, required=False,widget=forms.TextInput({'class': 'form-control'}))
     dev_owner = forms.CharField(label='dev_owner', required=False,max_length=200, widget=forms.TextInput({'class': 'form-control'}))
     ops_owner = forms.CharField(label='ops_owner', required=False,max_length=200, widget=forms.TextInput({'class': 'form-control'}))
@@ -240,10 +269,12 @@ class Item_listForm(forms.ModelForm):
         fields = (
             'item',
             'app',
+            'upstream',
             'tech',
             'front',
             'app_link',
             'mysql_link',
+            'redis_link',
             'codis_link',
             'sentinel',
             'memcache',
@@ -259,12 +290,44 @@ class Item_listForm(forms.ModelForm):
             'front':IpsModelSelect2MultipleWidget,
             'app_link':App_linksModelSelect2MultipleWidget,
             'mysql_link':Mysql_linksModelSelect2MultipleWidget,
+            'redis_link':Redis_linksModelSelect2MultipleWidget,
             'codis_link':Codis_linksModelSelect2MultipleWidget,
             'sentinel':SentinelModelSelect2MultipleWidget,
             'memcache':MemcacheModelSelect2MultipleWidget,
             'es':EsModelSelect2MultipleWidget,
             'mcq':McqModelSelect2MultipleWidget,
             'tfs':TfsModelSelect2MultipleWidget,
+        }
+        exclude = ['created_date', 'modified_date']
+
+
+class Item_checkForm(forms.ModelForm):
+    method = forms.CharField(label='method',   required=False,max_length=50,widget=forms.TextInput({'class': 'form-control'}))
+    headers = forms.CharField(label='headers',   required=False,max_length=50,widget=forms.TextInput({'class': 'form-control'}))
+    link_address = forms.CharField(label='link_address',   max_length=50,widget=forms.TextInput({'class': 'form-control'}))
+    content = forms.CharField(label='content',   required=False,max_length=50,widget=forms.TextInput({'class': 'form-control'}))
+    port = forms.CharField(label='port',   max_length=50,widget=forms.TextInput({'class': 'form-control'}))
+    retcode = forms.CharField(label='retcode',   required=False,max_length=50,widget=forms.TextInput({'class': 'form-control'}))
+    result = forms.CharField(label='result',   required=False,max_length=50,widget=forms.TextInput({'class': 'form-control'}))
+
+    class Meta:
+        model = Item_check
+        fields = (
+            'item',
+            'type',
+            'status',
+            'method',
+            'headers',
+            'link_address',
+            'content',
+            'port',
+            'retcode',
+            'result',
+            'remark'
+        )
+        widgets = {
+            'item':Item_nameModelSelect2Widget,
+            'type':App_nameModelSelect2Widget,
         }
         exclude = ['created_date', 'modified_date']
 

@@ -92,7 +92,7 @@ WSGI_APPLICATION = 'ips.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db1.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'db10.sqlite3'),
     }
 }
 
@@ -101,9 +101,9 @@ DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'ips',
-#         'USER': 'ips',
-#         'PASSWORD': 'ips',
-#         'HOST': '10.0.60.127',
+#         'USER': 'ipsadmin',
+#         'PASSWORD': 'Eju@ips1',
+#         'HOST': '10.99.69.35',
 #         'PORT': '3306',
 #     }
 # }
@@ -161,14 +161,14 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     'c:\\work\\ips\\static',
-    # '/opt/app/zhibo_status/static',
+    # '/opt/app/ips/static',
 )
 import djcelery
 from kombu import Exchange, Queue
 djcelery.setup_loader()
 # Celery Settings
-BROKER_URL = 'redis://127.0.0.1:6379/14'
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/2'
+BROKER_URL = 'redis://ce645e80fedd0d5e6b264b3e424bffe0@10.99.69.35:6379/3'
+CELERY_RESULT_BACKEND = 'redis://ce645e80fedd0d5e6b264b3e424bffe0@10.99.69.35:6379/2'
 # CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 CELERY_QUEUES = (
     Queue('10.99.70.27'),
@@ -277,14 +277,14 @@ NEVER_REDIS_TIMEOUT=365*24*60*60
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/0",
+        "LOCATION": "redis://ce645e80fedd0d5e6b264b3e424bffe0@127.0.0.1:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     'select2': {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": "redis://ce645e80fedd0d5e6b264b3e424bffe0@127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }

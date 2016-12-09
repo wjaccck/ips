@@ -94,6 +94,16 @@
                                             </td>
                                     </tr>
                             {% endif %}
+                            {% if redis_count != 0 %}
+                                    <tr>
+                                            <td>{{ redis_name }}</td>
+                                            <td>{{ redis_count }}</td>
+                                            <td>{% for redis_p in redis  %}
+                                                    {{ redis_p }}<br>
+                                                {% endfor %}
+                                            </td>
+                                    </tr>
+                            {% endif %}
                             {% if codis_count != 0 %}
                                     <tr>
                                             <td>{{ codis_name }}</td>
@@ -154,6 +164,30 @@
                                             </td>
                                     </tr>
                             {% endif %}
+                            {% if check_count != 0 %}
+                                    <tr>
+                                            <td>{% for check_name_p in check_name  %}
+                                                    {{ check_name_p }}检测<br>
+                                                {% endfor %}</td>
+                                            <td>{{ check_count }}</td>
+                                            <td>{% for check_list_p in check_list  %}
+                                                    {{ check_list_p.link_address }}<br>
+                                                {% endfor %}
+                                            </td>
+                                    </tr>
+                            {% endif %}
+                                    <tr>
+                                            <td>upstream</td>
+                                            <td></td>
+                                            <td>{{ upstream }}
+                                            </td>
+                                    </tr>
+                                    <tr>
+                                            <td>备注</td>
+                                            <td>0</td>
+                                            <td>{{ remark }}
+                                            </td>
+                                    </tr>
                             </tbody>
 							</table>
 						</div>

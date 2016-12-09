@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="c34024bc-3cd3-4aad-9804-f4ec424450bf" name="ips" url="http://10.99.69.35">
+        <fileTransfer host="10.99.69.35" port="22" rootFolder="/opt/app/ips" accessType="SFTP" password="dfcfdfc0dfdfdfeadfc9dfc6dfc5dfdfdfce" username="cloud">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

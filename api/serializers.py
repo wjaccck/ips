@@ -5,7 +5,7 @@ from rest_framework import serializers
 from netaddr import *
 from abstract.serializers import CommonHyperlinkedModelSerializer
 from .models import Ipv4Address, Ipv4Network,Machine,Site,Nginx,Type_name,Tech\
-    ,Mysql,Application,Codis,Sentinel,Memcached,Es,Mcq,Tfs,Item_name,Item_list
+    ,Mysql,Application,Codis,Sentinel,Memcached,Es,Mcq,Tfs,Item_name,Item_list,Redis
 
 
 class MachineSerializer(serializers.HyperlinkedModelSerializer):
@@ -72,6 +72,11 @@ class Applicationserializers(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Application
 
+class Redisserializers(serializers.HyperlinkedModelSerializer):
+    host=serializers.SlugRelatedField(queryset=Ipv4Address.objects.all(),slug_field='name')
+    class Meta:
+        model = Redis
+
 class Codisserializers(serializers.HyperlinkedModelSerializer):
     host=serializers.SlugRelatedField(queryset=Ipv4Address.objects.all(),slug_field='name')
     class Meta:
@@ -113,13 +118,23 @@ class Item_listserializers(serializers.ModelSerializer):
     front = serializers.StringRelatedField(many=True)
     app_link = serializers.StringRelatedField(many=True)
     mysql_link = serializers.StringRelatedField(many=True)
+    redis_link = serializers.StringRelatedField(many=True)
     codis_link = serializers.StringRelatedField(many=True)
     sentinel = serializers.StringRelatedField(many=True)
     memcache = serializers.StringRelatedField(many=True)
     es = serializers.StringRelatedField(many=True)
     mcq = serializers.StringRelatedField(many=True)
     tfs = serializers.StringRelatedField(many=True)
+    dev_owner = serializers.SerializerMethodField(read_only=True)
+    deploy_dir= serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Item_list
+
+
+    def get_dev_owner(self, obj):
+        return obj.item.dev_owner
+
+    def get_deploy_dir(self, obj):
+        return obj.item.location
 

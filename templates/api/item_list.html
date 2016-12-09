@@ -72,6 +72,9 @@
 								<th>
 									 app
 								</th>
+                                <th>
+									 upstream
+								</th>
 								<th>
 									 tech
 								</th>
@@ -85,11 +88,15 @@
 									 mysql
 								</th>
                                 <th>
+									 redis
+								</th>
+                                <th>
 									 codis
 								</th>
                                 <th>
 									 sentinel
 								</th>
+
                                 <th>
 									 memcache
 								</th>
@@ -125,10 +132,12 @@
                                         <td>{{ m.id }}</td>
                                         <td>{{ m.item }}</td>
                                         <td>{{ m.app.content }}</td>
+                                        <td>{{ m.upstream }}</td>
                                         <td>{{ m.tech.content }}</td>
                                         <td>{{ m.front.all.count }}</td>
                                         <td>{{ m.app_link.all.count }}</td>
                                         <td>{{ m.mysql_link.all.count }}</td>
+                                        <td>{{ m.redis_link.all.count }}</td>
                                         <td>{{ m.codis_link.all.count }}</td>
                                         <td>{{ m.sentinel.all.count }}</td>
                                         <td>{{ m.memcache.all.count }}</td>

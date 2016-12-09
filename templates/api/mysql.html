@@ -76,6 +76,9 @@
 									 库名
 								</th>
                                 <th>
+									 slave
+								</th>
+                                <th>
 									 备注
 								</th>
                                 <th>
@@ -98,6 +101,11 @@
                                         <td>{{ m.host.name }}</td>
                                         <td>{{ m.port }}</td>
                                         <td>{{ m.name }}</td>
+                                        <td>
+                                            {% for n in m.slaveof.all %}
+                                               {{ n }}<br>
+                                            {% endfor %}
+                                        </td>
                                         <td>{{ m.detail }}</td>
                                         <td>{{ m.created_date |date:'Y-m-d H:i:s' }}</td>
                                         {% if user.is_superuser %}

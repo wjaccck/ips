@@ -23,16 +23,23 @@ from api.tasks import MissionTask
 
 def index(req):
     if req.user.is_authenticated():
-        all_count=Machine.objects.all().count()
-        product_list=[ x.get('product') for x in Machine.objects.all().values('product').distinct()]
-        product=[{"name":x,"number":Machine.objects.filter(product=x).count()} for x in product_list]
-        sys_list=[ x.get('major_release') for x in Machine.objects.all().values('major_release').distinct()]
-        sys=[{"name":x,"number":Machine.objects.filter(major_release=x).count()} for x in sys_list]
+        idc_list=['hz','qs']
+        all_count=Machine.objects.filter(company='shihui').count()
+        product_list=[ x.get('product') for x in Machine.objects.filter(company='shihui').values('product').distinct()]
+        product=[{"name":x,"number":Machine.objects.filter(company='shihui',product=x).count()} for x in product_list]
+        sys_list=[ x.get('major_release') for x in Machine.objects.filter(company='shihui').values('major_release').distinct()]
+        sys=[{"name":x,"number":Machine.objects.filter(company='shihui',major_release=x).count()} for x in sys_list]
+        idc_detail=[{"name":x,"number":Machine.objects.filter(company='shihui',idc=x).count()} for x in idc_list]
+        dev_owner=[ x.get('dev_owner') for x in Item_name.objects.all().values('dev_owner').distinct()]
+        item_summary=[{"name":x,"number":Item_name.objects.filter(dev_owner=x).count()} for x in dev_owner]
+
         response = render(req,'webui/index.html',{"username":req.user.last_name,
                                                   "active":"index",
                                                   "total_list":all_count,
                                                   "product":product,
-                                                  "sys":sys
+                                                  "sys":sys,
+                                                  "idc_detail":idc_detail,
+                                                  "item_summary":item_summary,
                                                   }
                           )
     else:
@@ -110,10 +117,12 @@ class Machine_listViewSet(Base_ListViewSet):
     paginate_by = 10
 
     def get_queryset(self):
-        idc=self.kwargs['idc']
-        print idc
+        try:
+            idc=self.request.GET['idc']
+        except:
+            idc=''
         query_list=[]
-        if idc!='all':
+        if idc:
             query_list.append(Q(idc=idc))
         try:
             ip=self.request.GET['ip']
@@ -123,6 +132,11 @@ class Machine_listViewSet(Base_ListViewSet):
         try:
             sys_desc=self.request.GET['sys']
             query_list.append(Q(sys_desc__istartswith=sys_desc))
+        except:
+            pass
+        try:
+            company=self.request.GET['company']
+            query_list.append(Q(company=company))
         except:
             pass
         if query_list:
@@ -275,13 +289,13 @@ class Application_ViewSet(Base_ListViewSet):
 
 class Application_CreateViewSet(Base_CreateViewSet):
     model = Application
-    form_class = forms.Application
+    form_class = forms.ApplicationForm
     template_name = 'api/application_form.html'
     success_url = reverse_lazy('application-list')
 
 class Application_UpdateViewSet(Base_UpdateViewSet):
     model = Application
-    form_class = forms.Application
+    form_class = forms.ApplicationForm
     success_url = reverse_lazy('application-list')
     template_name = 'api/application_form.html'
 
@@ -313,6 +327,35 @@ class Codis_UpdateViewSet(Base_UpdateViewSet):
     form_class = forms.CodisForm
     success_url = reverse_lazy('codis-list')
     template_name = 'api/codis_form.html'
+
+class Redis_ViewSet(Base_ListViewSet):
+    Redis.objects.all().count()
+    model = Redis
+    template_name = 'api/redis.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        try:
+            keyword=self.request.GET['keyword']
+        except:
+            keyword=''
+
+        if keyword:
+            return Redis.objects.select_related().filter(host__name=keyword)
+        else:
+            return Redis.objects.all()
+
+class Redis_CreateViewSet(Base_CreateViewSet):
+    model = Redis
+    form_class = forms.RedisForm
+    template_name = 'api/redis_form.html'
+    success_url = reverse_lazy('redis-list')
+
+class Redis_UpdateViewSet(Base_UpdateViewSet):
+    model = Redis
+    form_class = forms.RedisForm
+    success_url = reverse_lazy('redis-list')
+    template_name = 'api/redis_form.html'
 
 class Sentinel_ViewSet(Base_ListViewSet):
     Sentinel.objects.all().count()
@@ -466,13 +509,20 @@ class Item_name_ViewSet(Base_ListViewSet):
     paginate_by = 10
 
     def get_queryset(self):
+        query_list=[]
         try:
             keyword=self.request.GET['keyword']
+            query_list.append(Q(module__icontains=keyword))
         except:
-            keyword=''
+            pass
+        try:
+            dev_owner=self.request.GET['dev_owner']
+            query_list.append(Q(dev_owner=dev_owner))
+        except:
+            pass
 
-        if keyword:
-            return Item_name.objects.select_related().filter(content__icontains=keyword)
+        if query_list:
+            return list(set(Item_name.objects.select_related().filter(reduce(operator.and_, query_list))))
         else:
             return Item_name.objects.all()
 
@@ -499,9 +549,9 @@ class Item_list_ViewSet(Base_ListViewSet):
             keyword=self.request.GET['keyword']
         except:
             keyword=''
-
         if keyword:
-            return Item_list.objects.select_related().filter(item__content__icontains=keyword)
+            return Item_list.objects.select_related().filter(item__module__icontains=keyword)
+
         else:
             return Item_list.objects.select_related().all()
 
@@ -516,6 +566,36 @@ class Item_list_UpdateViewSet(Base_UpdateViewSet):
     form_class = forms.Item_listForm
     success_url = reverse_lazy('item-list-list')
     template_name = 'api/item_list_form.html'
+
+
+class Item_check_ViewSet(Base_ListViewSet):
+    Item_check.objects.all().count()
+    model = Item_check
+    template_name = 'api/item_check.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        try:
+            keyword=self.request.GET['keyword']
+        except:
+            keyword=''
+
+        if keyword:
+            return Item_check.objects.select_related().filter(item__content__icontains=keyword)
+        else:
+            return Item_check.objects.select_related().all()
+
+class Item_check_CreateViewSet(Base_CreateViewSet):
+    model = Item_check
+    form_class = forms.Item_checkForm
+    template_name = 'api/item_check_form.html'
+    success_url = reverse_lazy('item-check-list')
+
+class Item_check_UpdateViewSet(Base_UpdateViewSet):
+    model = Item_check
+    form_class = forms.Item_checkForm
+    success_url = reverse_lazy('item-check-list')
+    template_name = 'api/item_check_form.html'
 
 class DetailView(TemplateView):
     template_name = u'api/detail.html'
@@ -540,6 +620,9 @@ class DetailView(TemplateView):
         context['codis_name'] = u'codis'
         context['codis_count']=detail.codis_link.all().count()
         context['codis']=detail.codis_link.all()
+        context['redis_name'] = u'redis'
+        context['redis_count']=detail.redis_link.all().count()
+        context['redis']=detail.redis_link.all()
         context['sentinel_name'] = u'sentinel'
         context['sentinel_count']=detail.sentinel.all().count()
         context['sentinel']=detail.sentinel.all()
@@ -555,9 +638,100 @@ class DetailView(TemplateView):
         context['tfs_name'] = u'tfs'
         context['tfs_count']=detail.tfs.all().count()
         context['tfs']=detail.tfs.all()
+        context['remark']=detail.remark
+        context['upstream']=detail.upstream
         context['location']=detail.item.location
+        context['check_name']=list(set([ x.type.content for x in Item_check.objects.filter(item=detail.item)]))
+        context['check_count']=Item_check.objects.filter(item=detail.item).count()
+        # context['check_name']=Item_check.objects.filter(item=detail.item).values('type').distinct()
+        context['check_list']=Item_check.objects.filter(item=detail.item)
 
         return context
+
+class Item_deploy_detailView(TemplateView):
+    template_name = u'api/deploy_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(Item_deploy_detailView, self).get_context_data(**kwargs)
+        all_item=Item_list.objects.select_related().all()
+        site_all=list(set([x.app for x in all_item]))
+        mysql_all_list=[x.mysql_link.all() for x in all_item]
+        mysql_all=[]
+        for mysql_p in mysql_all_list:
+            for mysql_p_n in mysql_p:
+                mysql_all.append(mysql_p_n)
+        front_all_list=[x.front.all() for x in all_item]
+        front_all=[]
+        for front_p in front_all_list:
+            for front_p_n in front_p:
+                front_all.append(front_p_n)
+        app_all_list=[x.app_link.all() for x in all_item]
+        app_all=[]
+        for app_p in app_all_list:
+            for app_p_n in app_p:
+                app_all.append(app_p_n.host.name)
+        redis_all_list=[x.redis_link.all() for x in all_item]
+        redis_all=[]
+        for redis_p in redis_all_list:
+            for redis_p_n in redis_p:
+                redis_all.append(redis_p_n)
+        sentinel_all_list=[x.sentinel.all() for x in all_item]
+        sentinel_all=[]
+        for sentinel_p in sentinel_all_list:
+            for sentinel_p_n in sentinel_p:
+                sentinel_all.append(sentinel_p_n)
+        codis_all_list=[x.codis_link.all() for x in all_item]
+        codis_all=[]
+        for codis_p in codis_all_list:
+            for codis_p_n in codis_p:
+                codis_all.append(codis_p_n)
+        all_redis_cache=[]
+        all_redis_cache.extend(redis_all)
+        all_redis_cache.extend(sentinel_all)
+        all_redis_cache.extend(codis_all)
+        context['site_count'] = site_all.__len__()
+        context['site_list'] = site_all
+        context['mysql_count'] = list(set(mysql_all)).__len__()
+        context['mysql_list'] = list(set(mysql_all))
+        context['front_count'] = list(set(front_all)).__len__()
+        context['front_list'] = list(set(front_all))
+        context['app_count'] = list(set(app_all)).__len__()
+        context['app_list'] = list(set(app_all))
+        context['redis_cache_count'] = list(set(all_redis_cache)).__len__()
+        context['redis_cache_list'] = list(set(all_redis_cache))
+        return context
+
+
+class Fun_queryView(TemplateView):
+    template_name = u'api/fun_query.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(Fun_queryView, self).get_context_data(**kwargs)
+        try:
+            name=self.request.GET['name']
+            host=Ipv4Address.objects.get(name=name)
+        except:
+            host=''
+        if host:
+            # context['nginx'] = host.nginx_link.select_related().all()
+            item_list=[]
+            context['mysql'] = host.mysql_link.select_related().all()
+            context['app'] = host.app_link.select_related().all()
+            context['redis'] = host.redis_link.select_related().all()
+            context['codis'] = host.codis_link.select_related().all()
+            context['sentinel'] = host.sentinel_link.select_related().all()
+            context['memcache'] = host.memcache_link.select_related().all()
+            context['es'] = host.es_link.select_related().all()
+            context['mcq'] = host.mcq_link.select_related().all()
+            context['tfs'] = host.tfs_link.select_related().all()
+            context['item_list']=list(set(item_list))
+            summary_list=['mysql','app','redis','codis','sentinel','memcache','es','mcq','tfs']
+            summary_info=[ "{0}:{1}".format(x,context.get(x).count()) for x in summary_list if context.get(x).count()!=0]
+            context['summary']='|'.join(summary_info)
+
+            return context
+        else:
+            return context
 
 class Docker_list_ViewSet(Base_ListViewSet):
     Docker_list.objects.all().count()

@@ -1,0 +1,143 @@
+{% extends "webui/index.html" %}
+{% load staticfiles %}
+{% block username %}
+{{ username }}
+{% endblock %}
+
+<!-- END HEADER INNER -->
+{% block content %}
+<div class="page-content-wrapper">
+		<div class="page-content">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-gift"></i>简要归纳
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse">
+                        </a>
+                        <a href="#" data-toggle="modal" class="config">
+                        </a>
+                        <a href="javascript:;" class="reload">
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <p>
+                            <h3>部署详情的粗略统计</h3>
+                            <h4>涉及站点{{ site_count }}个</h4>
+                            <h4>涉及前端主要为nginx共{{ front_count }}</h4>
+                            <h4>涉及应用部署共{{ app_count }}</h4>
+                            <h4>涉及数据库MYSQL共{{ mysql_count }}</h4>
+                            <h4>涉及缓存共{{ redis_cache_count }}</h4>
+                    </p>
+                </div>
+                </div>
+
+    			<div class="row margin-top-10">
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+{#                    <a href="{% url 'dc-list' %}">#}
+                        <div class="dashboard-stat2">
+                            <div class="display">
+                                <div class="number">
+                                    <small>MySQL</small>
+{#                                    <h3 class="font-green-sharp">{{ dc_list }}</h3>#}
+                                        <br>
+
+                                    </br>
+                                    {% for m in mysql_list %}
+                                        <br>
+                                                {{ m }}
+
+                                        </br>
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+                        </div>
+{#                    </a>#}
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+{#                    <a href="{% url 'app-list' %}">#}
+                        <div class="dashboard-stat2">
+                            <div class="display">
+                                <div class="number">
+{#                                    <h3 class="font-red-haze">{{ app_list }}</h3>#}
+                                    <small>nginx</small>
+                                    <br>
+
+                                    </br>
+                                    {% for m in front_list %}
+                                        <br>
+                                                {{ m }}
+
+                                        </br>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+{#                    </a>#}
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+{#                    <a href="{% url 'env-list' %}">#}
+                        <div class="dashboard-stat2">
+                            <div class="display">
+                                <div class="number">
+{#                                    <h3 class="font-blue-sharp">{{ env_list }}</h3>#}
+                                    <small>app</small>
+                                    <br>
+
+                                    </br>
+                                    {% for m in app_list %}
+                                        <br>
+                                                {{ m }}
+
+                                        </br>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+{#                    </a>#}
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+{#					<a href="{% url 'module-list' %}">#}
+                        <div class="dashboard-stat2">
+                            <div class="display">
+                                <div class="number">
+{#                                    <h3 class="font-purple-soft">{{ module_list }}</h3>#}
+                                    <small>缓存</small>
+                                    <br>
+
+                                    </br>
+                                    {% for m in redis_cache_list %}
+                                        <br>
+                                                {{ m }}
+
+                                        </br>
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+					    </div>
+{#                    </a>#}
+				</div>
+			</div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+{#    <script type="text/javascript" src="http://cdn.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>#}
+
+<script>
+jQuery(document).ready(function() {
+   Metronic.init(); // init metronic core componets
+   Layout.init(); // init layout
+   Demo.init(); // init demo features
+    Index.init(); // init index page
+ Tasks.initDashboardWidget(); // init tash dashboard widget
+});
+</script>
+{% endblock %}
+

@@ -10,7 +10,7 @@ urlpatterns = [
     #edit by guziqiang
     url(r'^$',views.index,name='index'),
     ###dc
-    url(r'^machine/(?P<idc>\w+)/$',login_required(views.Machine_listViewSet.as_view()),name='machine-list'),
+    url(r'^machine/$',login_required(views.Machine_listViewSet.as_view()),name='machine-list'),
     url(r'^machine/update/(?P<pk>\d+)/$',login_required(views.Machine_updateViewSet.as_view()),name='machine-update'),
     url(r'^machine/create/$',login_required(views.Machine_createViewSet.as_view()),name='machine-create'),
 
@@ -50,6 +50,11 @@ urlpatterns = [
     url(r'^sentinel/update/(?P<pk>\d+)/$',login_required(views.Sentinel_UpdateViewSet.as_view()),name='sentinel-update'),
     url(r'^sentinel/create/$',login_required(views.Sentinel_CreateViewSet.as_view()),name='sentinel-create'),
 
+    ### redis
+    url(r'^redis/$',login_required(views.Redis_ViewSet.as_view()),name='redis-list'),
+    url(r'^redis/update/(?P<pk>\d+)/$',login_required(views.Redis_UpdateViewSet.as_view()),name='redis-update'),
+    url(r'^redis/create/$',login_required(views.Redis_CreateViewSet.as_view()),name='redis-create'),
+
     ### memcache
     url(r'^memcache/$',login_required(views.Memcache_ViewSet.as_view()),name='memcache-list'),
     url(r'^memcache/update/(?P<pk>\d+)/$',login_required(views.Memcache_UpdateViewSet.as_view()),name='memcache-update'),
@@ -84,6 +89,11 @@ urlpatterns = [
     url(r'^item-list/update/(?P<pk>\d+)/$',login_required(views.Item_list_UpdateViewSet.as_view()),name='item-list-update'),
     url(r'^item-list/create/$',login_required(views.Item_list_CreateViewSet.as_view()),name='item-list-create'),
 
+    ### item-check
+    url(r'^item-check/$',login_required(views.Item_check_ViewSet.as_view()),name='item-check-list'),
+    url(r'^item-check/update/(?P<pk>\d+)/$',login_required(views.Item_check_UpdateViewSet.as_view()),name='item-check-update'),
+    url(r'^item-check/create/$',login_required(views.Item_check_CreateViewSet.as_view()),name='item-check-create'),
+
 
     ### docker
     url(r'^docker/$',login_required(views.Docker_list_ViewSet.as_view()),name='docker-list'),
@@ -96,6 +106,8 @@ urlpatterns = [
 
     ### item-detail
     url(r'^item/detail/(?P<pk>\d+)/$',login_required(views.DetailView.as_view()),name='item-list-detail'),
+    url(r'^item/deploy/detail/$',login_required(views.Item_deploy_detailView.as_view()),name='item-deploy-detail'),
+    url(r'^fun_query/$',login_required(views.Fun_queryView.as_view()),name='fun-detail'),
 
 
 

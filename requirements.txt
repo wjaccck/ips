@@ -18,7 +18,7 @@ django-redis
 docker-py
 #python-ldap
 #django-auth-ldap
-#django-import-export
-
+django-import-export
+gunicorn
 # Should use pip wheel to install
-# mysql-python
+mysql-python
