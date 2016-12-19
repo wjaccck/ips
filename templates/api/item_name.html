@@ -123,7 +123,7 @@
                                         {% if user.is_superuser %}
                                         <td><a  href="{% url 'item-name-update' m.id %} ">修改</a></td>
                                         {% endif %}
-{#                                        <td><a  href="{% url 'name-list' %}?app={{ m.content }}">详情</a></td>#}
+{#                                        <td><a  href="{% url 'item-list-detail' m.item_link.all.id %}">详情</a></td>#}
                                     </tr>
                                 {% endfor %}
 							</tbody>

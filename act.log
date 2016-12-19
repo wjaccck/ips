@@ -324,3 +324,327 @@ Traceback (most recent call last):
   File "C:\work\open\ips\webui\views.py", line 692, in get_context_data
     context['site_count'] = site_all.count()
 TypeError: count() takes exactly one argument (0 given)
+[2016-12-14 16:31:26,042] ERROR base.handle_uncaught_exception-[256] Internal Server Error: /item-name/
+Traceback (most recent call last):
+  File "C:\work\open\ips\env\lib\site-packages\django\core\handlers\base.py", line 164, in get_response
+    response = response.render()
+  File "C:\work\open\ips\env\lib\site-packages\django\template\response.py", line 158, in render
+    self.content = self.rendered_content
+  File "C:\work\open\ips\env\lib\site-packages\django\template\response.py", line 135, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\backends\django.py", line 74, in render
+    return self.template.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 210, in render
+    return self._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 135, in render
+    return compiled_parent._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 135, in render
+    return compiled_parent._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 217, in render
+    nodelist.append(node.render(context))
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 507, in render
+    six.reraise(*exc_info)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 493, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\work\open\ips\env\lib\site-packages\django\core\urlresolvers.py", line 578, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "C:\work\open\ips\env\lib\site-packages\django\core\urlresolvers.py", line 495, in _reverse_with_prefix
+    (lookup_view_s, args, kwargs, len(patterns), patterns))
+NoReverseMatch: Reverse for 'item-list-detail' with arguments '('',)' and keyword arguments '{}' not found. 1 pattern(s) tried: ['item/detail/(?P<pk>\\d+)/$']
+[2016-12-14 16:31:26,042] ERROR base.handle_uncaught_exception-[256] Internal Server Error: /item-name/
+Traceback (most recent call last):
+  File "C:\work\open\ips\env\lib\site-packages\django\core\handlers\base.py", line 164, in get_response
+    response = response.render()
+  File "C:\work\open\ips\env\lib\site-packages\django\template\response.py", line 158, in render
+    self.content = self.rendered_content
+  File "C:\work\open\ips\env\lib\site-packages\django\template\response.py", line 135, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\backends\django.py", line 74, in render
+    return self.template.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 210, in render
+    return self._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 135, in render
+    return compiled_parent._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 135, in render
+    return compiled_parent._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 217, in render
+    nodelist.append(node.render(context))
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 507, in render
+    six.reraise(*exc_info)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 493, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\work\open\ips\env\lib\site-packages\django\core\urlresolvers.py", line 578, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "C:\work\open\ips\env\lib\site-packages\django\core\urlresolvers.py", line 495, in _reverse_with_prefix
+    (lookup_view_s, args, kwargs, len(patterns), patterns))
+NoReverseMatch: Reverse for 'item-list-detail' with arguments '('',)' and keyword arguments '{}' not found. 1 pattern(s) tried: ['item/detail/(?P<pk>\\d+)/$']
+[2016-12-14 16:33:28,382] ERROR base.handle_uncaught_exception-[256] Internal Server Error: /item-name/
+Traceback (most recent call last):
+  File "C:\work\open\ips\env\lib\site-packages\django\core\handlers\base.py", line 164, in get_response
+    response = response.render()
+  File "C:\work\open\ips\env\lib\site-packages\django\template\response.py", line 158, in render
+    self.content = self.rendered_content
+  File "C:\work\open\ips\env\lib\site-packages\django\template\response.py", line 135, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\backends\django.py", line 74, in render
+    return self.template.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 210, in render
+    return self._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 135, in render
+    return compiled_parent._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 135, in render
+    return compiled_parent._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 217, in render
+    nodelist.append(node.render(context))
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 507, in render
+    six.reraise(*exc_info)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 493, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\work\open\ips\env\lib\site-packages\django\core\urlresolvers.py", line 578, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "C:\work\open\ips\env\lib\site-packages\django\core\urlresolvers.py", line 495, in _reverse_with_prefix
+    (lookup_view_s, args, kwargs, len(patterns), patterns))
+NoReverseMatch: Reverse for 'item-list-detail' with arguments '('',)' and keyword arguments '{}' not found. 1 pattern(s) tried: ['item/detail/(?P<pk>\\d+)/$']
+[2016-12-14 16:33:28,382] ERROR base.handle_uncaught_exception-[256] Internal Server Error: /item-name/
+Traceback (most recent call last):
+  File "C:\work\open\ips\env\lib\site-packages\django\core\handlers\base.py", line 164, in get_response
+    response = response.render()
+  File "C:\work\open\ips\env\lib\site-packages\django\template\response.py", line 158, in render
+    self.content = self.rendered_content
+  File "C:\work\open\ips\env\lib\site-packages\django\template\response.py", line 135, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\backends\django.py", line 74, in render
+    return self.template.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 210, in render
+    return self._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 135, in render
+    return compiled_parent._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 135, in render
+    return compiled_parent._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 217, in render
+    nodelist.append(node.render(context))
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 507, in render
+    six.reraise(*exc_info)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 493, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\work\open\ips\env\lib\site-packages\django\core\urlresolvers.py", line 578, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "C:\work\open\ips\env\lib\site-packages\django\core\urlresolvers.py", line 495, in _reverse_with_prefix
+    (lookup_view_s, args, kwargs, len(patterns), patterns))
+NoReverseMatch: Reverse for 'item-list-detail' with arguments '('',)' and keyword arguments '{}' not found. 1 pattern(s) tried: ['item/detail/(?P<pk>\\d+)/$']
+[2016-12-14 16:43:53,375] ERROR base.handle_uncaught_exception-[256] Internal Server Error: /item-name/
+Traceback (most recent call last):
+  File "C:\work\open\ips\env\lib\site-packages\django\core\handlers\base.py", line 164, in get_response
+    response = response.render()
+  File "C:\work\open\ips\env\lib\site-packages\django\template\response.py", line 158, in render
+    self.content = self.rendered_content
+  File "C:\work\open\ips\env\lib\site-packages\django\template\response.py", line 135, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\backends\django.py", line 74, in render
+    return self.template.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 210, in render
+    return self._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 135, in render
+    return compiled_parent._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 135, in render
+    return compiled_parent._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 217, in render
+    nodelist.append(node.render(context))
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 507, in render
+    six.reraise(*exc_info)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 493, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\work\open\ips\env\lib\site-packages\django\core\urlresolvers.py", line 578, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "C:\work\open\ips\env\lib\site-packages\django\core\urlresolvers.py", line 495, in _reverse_with_prefix
+    (lookup_view_s, args, kwargs, len(patterns), patterns))
+NoReverseMatch: Reverse for 'item-list-detail' with arguments '('',)' and keyword arguments '{}' not found. 1 pattern(s) tried: ['item/detail/(?P<pk>\\d+)/$']
+[2016-12-14 16:43:53,375] ERROR base.handle_uncaught_exception-[256] Internal Server Error: /item-name/
+Traceback (most recent call last):
+  File "C:\work\open\ips\env\lib\site-packages\django\core\handlers\base.py", line 164, in get_response
+    response = response.render()
+  File "C:\work\open\ips\env\lib\site-packages\django\template\response.py", line 158, in render
+    self.content = self.rendered_content
+  File "C:\work\open\ips\env\lib\site-packages\django\template\response.py", line 135, in rendered_content
+    content = template.render(context, self._request)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\backends\django.py", line 74, in render
+    return self.template.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 210, in render
+    return self._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 135, in render
+    return compiled_parent._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 135, in render
+    return compiled_parent._render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 202, in _render
+    return self.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\base.py", line 905, in render
+    bit = self.render_node(node, context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\debug.py", line 79, in render_node
+    return node.render(context)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 217, in render
+    nodelist.append(node.render(context))
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 507, in render
+    six.reraise(*exc_info)
+  File "C:\work\open\ips\env\lib\site-packages\django\template\defaulttags.py", line 493, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\work\open\ips\env\lib\site-packages\django\core\urlresolvers.py", line 578, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "C:\work\open\ips\env\lib\site-packages\django\core\urlresolvers.py", line 495, in _reverse_with_prefix
+    (lookup_view_s, args, kwargs, len(patterns), patterns))
+NoReverseMatch: Reverse for 'item-list-detail' with arguments '('',)' and keyword arguments '{}' not found. 1 pattern(s) tried: ['item/detail/(?P<pk>\\d+)/$']
+[2016-12-19 11:34:37,009] ERROR base.handle_uncaught_exception-[256] Internal Server Error: /item_fun/
+Traceback (most recent call last):
+  File "C:\work\open\ips\env\lib\site-packages\django\core\handlers\base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\work\open\ips\env\lib\site-packages\django\contrib\auth\decorators.py", line 22, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\work\open\ips\webui\views.py", line 872, in Item_query
+    response = render(req,'api/item_query.html',{"item_list":item_list,
+UnboundLocalError: local variable 'item_list' referenced before assignment
+[2016-12-19 11:34:37,009] ERROR base.handle_uncaught_exception-[256] Internal Server Error: /item_fun/
+Traceback (most recent call last):
+  File "C:\work\open\ips\env\lib\site-packages\django\core\handlers\base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\work\open\ips\env\lib\site-packages\django\contrib\auth\decorators.py", line 22, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\work\open\ips\webui\views.py", line 872, in Item_query
+    response = render(req,'api/item_query.html',{"item_list":item_list,
+UnboundLocalError: local variable 'item_list' referenced before assignment

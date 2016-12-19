@@ -92,8 +92,13 @@ class Mysql(Link_info,API_BASE):
     name=models.CharField(max_length=50)
     host=models.ForeignKey(Ipv4Address,related_name='mysql_link')
     slaveof=models.ManyToManyField(Ipv4Address,blank=True,related_name='mysql_slave')
+    # proxy_host=models.ForeignKey(Ipv4Address,blank=True,related_name='proxy_host')
+    # proxy_port=models.CharField(max_length=50,blank=True,related_name='proxy_port')
     def __unicode__(self):
+        # if self.proxy_host:
         return "%s:%s/%s" %(self.host.name,self.port,self.name)
+        # else:
+        #     return "%s:%s/%s" %(self.proxy_host.name,self.proxy_port,self.name)
 
     @staticmethod
     def verbose():
@@ -108,6 +113,33 @@ class Mysql(Link_info,API_BASE):
 #     @staticmethod
 #     def verbose():
 #         return u'数据库集群'
+
+class Zookeeper(Link_info,API_BASE):
+    host=models.ForeignKey(Ipv4Address,related_name='zoo_link')
+    def __unicode__(self):
+        return "%s:%s" %(self.host.name,self.port)
+
+    @staticmethod
+    def verbose():
+        return u'zookeeper'
+
+class Kafka(Link_info,API_BASE):
+    host=models.ForeignKey(Ipv4Address,related_name='kafka_link')
+    def __unicode__(self):
+        return "%s:%s" %(self.host.name,self.port)
+
+    @staticmethod
+    def verbose():
+        return u'kafka'
+
+class RocketMQ(Link_info,API_BASE):
+    host=models.ForeignKey(Ipv4Address,related_name='mq_link')
+    def __unicode__(self):
+        return "%s:%s" %(self.host.name,self.port)
+
+    @staticmethod
+    def verbose():
+        return u'mq'
 
 class Application(Link_info,API_BASE):
     host=models.ForeignKey(Ipv4Address,related_name='app_link')
@@ -194,6 +226,9 @@ class Item_list(CommonModel,ITEM_BASE):
     redis_link=models.ManyToManyField(Redis,blank=True,related_name='redis')
     codis_link=models.ManyToManyField(Codis,blank=True,related_name='codis')
     sentinel=models.ManyToManyField(Sentinel,blank=True,related_name='sentinel')
+    zookeeper=models.ManyToManyField(Zookeeper,blank=True,related_name='zookeeper')
+    kafka=models.ManyToManyField(Kafka,blank=True,related_name='kafka')
+    mq=models.ManyToManyField(RocketMQ,blank=True,related_name='mq')
     memcache=models.ManyToManyField(Memcached,blank=True,related_name='memcache')
     es=models.ManyToManyField(Es,blank=True,related_name='es')
     mcq=models.ManyToManyField(Mcq,blank=True,related_name='mcq')

@@ -164,6 +164,41 @@
                                             </td>
                                     </tr>
                             {% endif %}
+                            {% if zookeeper_count != 0 %}
+                                    <tr>
+                                            <td>{{ zookeeper_name }}</td>
+                                            <td>{{ zookeeper_count }}</td>
+                                            <td>{% for zookeeper_p in zookeeper  %}
+                                                    {{ zookeeper_p }}<br>
+                                                {% endfor %}
+                                            </td>
+                                    </tr>
+                            {% endif %}
+                            {% if kafka_count != 0 %}
+                                    <tr>
+                                            <td>{{ kafka_name }}</td>
+                                            <td>{{ kafka_count }}</td>
+                                            <td>{% for kafka_p in kafka  %}
+                                                    {{ kafka_p }}<br>
+                                                {% endfor %}
+                                            </td>
+                                    </tr>
+                            {% endif %}
+                            {% if mq_count != 0 %}
+                                    <tr>
+                                            <td>{{ mq_name }}</td>
+                                            <td>{{ mq_count }}</td>
+                                            <td>{% for mq_p in mq  %}
+                                                    {{ mq_p }}<br>
+                                                {% endfor %}
+                                            </td>
+                                    </tr>
+                            {% endif %}
+
+
+
+
+
                             {% if check_count != 0 %}
                                     <tr>
                                             <td>{% for check_name_p in check_name  %}

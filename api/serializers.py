@@ -127,7 +127,9 @@ class Item_listserializers(serializers.ModelSerializer):
     tfs = serializers.StringRelatedField(many=True)
     dev_owner = serializers.SerializerMethodField(read_only=True)
     deploy_dir= serializers.SerializerMethodField(read_only=True)
-
+    zookeeper=serializers.StringRelatedField(many=True)
+    kafka=serializers.StringRelatedField(many=True)
+    mq=serializers.StringRelatedField(many=True)
     class Meta:
         model = Item_list
 

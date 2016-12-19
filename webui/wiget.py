@@ -71,6 +71,25 @@ class McqModelSelect2MultipleWidget(BaseModelSelect2MultipleWidget):
         'host__name__istartswith',
         'pk__startswith',
     ]
+
+class ZookeeperModelSelect2MultipleWidget(BaseModelSelect2MultipleWidget):
+    search_fields = [
+        'host__name__istartswith',
+        'pk__startswith',
+    ]
+
+class KafkaModelSelect2MultipleWidget(BaseModelSelect2MultipleWidget):
+    search_fields = [
+        'host__name__istartswith',
+        'pk__startswith',
+    ]
+
+class MQModelSelect2MultipleWidget(BaseModelSelect2MultipleWidget):
+    search_fields = [
+        'host__name__istartswith',
+        'pk__startswith',
+    ]
+
 class TfsModelSelect2MultipleWidget(BaseModelSelect2MultipleWidget):
     search_fields = [
         'host__name__istartswith',

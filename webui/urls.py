@@ -78,6 +78,23 @@ urlpatterns = [
     url(r'^tfs/update/(?P<pk>\d+)/$',login_required(views.Tfs_UpdateViewSet.as_view()),name='tfs-update'),
     url(r'^tfs/create/$',login_required(views.Tfs_CreateViewSet.as_view()),name='tfs-create'),
 
+    ### zookeeper
+    url(r'^zookeeper/$',login_required(views.Zookeeper_ViewSet.as_view()),name='zookeeper-list'),
+    url(r'^zookeeper/update/(?P<pk>\d+)/$',login_required(views.Zookeeper_UpdateViewSet.as_view()),name='zookeeper-update'),
+    url(r'^zookeeper/create/$',login_required(views.Zookeeper_CreateViewSet.as_view()),name='zookeeper-create'),
+
+
+    ### kafka
+    url(r'^kafka/$',login_required(views.Kafka_ViewSet.as_view()),name='kafka-list'),
+    url(r'^kafka/update/(?P<pk>\d+)/$',login_required(views.Kafka_UpdateViewSet.as_view()),name='kafka-update'),
+    url(r'^kafka/create/$',login_required(views.Kafka_CreateViewSet.as_view()),name='kafka-create'),
+
+    ### mq
+    url(r'^mq/$',login_required(views.MQ_ViewSet.as_view()),name='mq-list'),
+    url(r'^mq/update/(?P<pk>\d+)/$',login_required(views.MQ_UpdateViewSet.as_view()),name='mq-update'),
+    url(r'^mq/create/$',login_required(views.MQ_CreateViewSet.as_view()),name='mq-create'),
+
+
     ### item-name
     url(r'^item-name/$',login_required(views.Item_name_ViewSet.as_view()),name='item-name-list'),
     url(r'^item-name/update/(?P<pk>\d+)/$',login_required(views.Item_name_UpdateViewSet.as_view()),name='item-name-update'),
@@ -108,6 +125,7 @@ urlpatterns = [
     url(r'^item/detail/(?P<pk>\d+)/$',login_required(views.DetailView.as_view()),name='item-list-detail'),
     url(r'^item/deploy/detail/$',login_required(views.Item_deploy_detailView.as_view()),name='item-deploy-detail'),
     url(r'^fun_query/$',login_required(views.Fun_queryView.as_view()),name='fun-detail'),
+    url(r'^item_fun/$',login_required(views.Item_query),name='item-fun'),
 
 
 

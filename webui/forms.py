@@ -230,6 +230,49 @@ class McqForm(forms.ModelForm):
         }
         exclude = ['created_date', 'modified_date']
 
+class ZookeeperForm(forms.ModelForm):
+    port = forms.CharField(label='port',   max_length=50,widget=forms.TextInput({'class': 'form-control'}))
+
+    class Meta:
+        model = Zookeeper
+        fields = (
+            'host',
+            'port',
+        )
+        widgets = {
+            'host':IpModelSelect2Widget,
+        }
+        exclude = ['created_date', 'modified_date']
+
+class KafkaForm(forms.ModelForm):
+    port = forms.CharField(label='port',   max_length=50,widget=forms.TextInput({'class': 'form-control'}))
+
+    class Meta:
+        model = Kafka
+        fields = (
+            'host',
+            'port',
+        )
+        widgets = {
+            'host':IpModelSelect2Widget,
+        }
+        exclude = ['created_date', 'modified_date']
+
+class MqForm(forms.ModelForm):
+    port = forms.CharField(label='port',   max_length=50,widget=forms.TextInput({'class': 'form-control'}))
+
+    class Meta:
+        model = RocketMQ
+        fields = (
+            'host',
+            'port',
+        )
+        widgets = {
+            'host':IpModelSelect2Widget,
+        }
+        exclude = ['created_date', 'modified_date']
+
+
 
 class TfsForm(forms.ModelForm):
     port = forms.CharField(label='port',   max_length=50,widget=forms.TextInput({'class': 'form-control'}))
@@ -281,6 +324,9 @@ class Item_listForm(forms.ModelForm):
             'es',
             'mcq',
             'tfs',
+            'zookeeper',
+            'kafka',
+            'mq',
             'remark',
         )
         widgets = {
@@ -297,6 +343,9 @@ class Item_listForm(forms.ModelForm):
             'es':EsModelSelect2MultipleWidget,
             'mcq':McqModelSelect2MultipleWidget,
             'tfs':TfsModelSelect2MultipleWidget,
+            'zookeeper':ZookeeperModelSelect2MultipleWidget,
+            'kafka':KafkaModelSelect2MultipleWidget,
+            'mq':MQModelSelect2MultipleWidget,
         }
         exclude = ['created_date', 'modified_date']
 

@@ -1,7 +1,7 @@
 django<1.9
 django-filter==0.15.3
 djangorestframework==3.3.2
-django-rest-swagger
+#django-rest-swagger
 django-extensions
 wheel
 pydot
@@ -21,4 +21,4 @@ docker-py
 django-import-export
 gunicorn
 # Should use pip wheel to install
-mysql-python
+# mysql-python

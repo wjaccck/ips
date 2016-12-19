@@ -502,6 +502,97 @@ class Tfs_UpdateViewSet(Base_UpdateViewSet):
     success_url = reverse_lazy('tfs-list')
     template_name = 'api/tfs_form.html'
 
+class Zookeeper_ViewSet(Base_ListViewSet):
+    Zookeeper.objects.all().count()
+    model = Zookeeper
+    template_name = 'api/zookeeper.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        try:
+            keyword=self.request.GET['keyword']
+        except:
+            keyword=''
+
+        if keyword:
+            return Zookeeper.objects.select_related().filter(host__name=keyword)
+        else:
+            return Zookeeper.objects.all()
+
+class Zookeeper_CreateViewSet(Base_CreateViewSet):
+    model = Zookeeper
+    form_class = forms.ZookeeperForm
+    template_name = 'api/zookeeper_form.html'
+    success_url = reverse_lazy('zookeeper-list')
+
+class Zookeeper_UpdateViewSet(Base_UpdateViewSet):
+    model = Zookeeper
+    form_class = forms.ZookeeperForm
+    success_url = reverse_lazy('zookeeper-list')
+    template_name = 'api/zookeeper_form.html'
+
+
+class Kafka_ViewSet(Base_ListViewSet):
+    Kafka.objects.all().count()
+    model = Kafka
+    template_name = 'api/kafka.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        try:
+            keyword=self.request.GET['keyword']
+        except:
+            keyword=''
+
+        if keyword:
+            return Kafka.objects.select_related().filter(host__name=keyword)
+        else:
+            return Kafka.objects.all()
+
+class Kafka_CreateViewSet(Base_CreateViewSet):
+    model = Kafka
+    form_class = forms.KafkaForm
+    template_name = 'api/kafka_form.html'
+    success_url = reverse_lazy('kafka-list')
+
+class Kafka_UpdateViewSet(Base_UpdateViewSet):
+    model = Kafka
+    form_class = forms.KafkaForm
+    success_url = reverse_lazy('kafka-list')
+    template_name = 'api/kafka_form.html'
+
+
+class MQ_ViewSet(Base_ListViewSet):
+    RocketMQ.objects.all().count()
+    model = RocketMQ
+    template_name = 'api/mq.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        try:
+            keyword=self.request.GET['keyword']
+        except:
+            keyword=''
+
+        if keyword:
+            return RocketMQ.objects.select_related().filter(host__name=keyword)
+        else:
+            return RocketMQ.objects.all()
+
+class MQ_CreateViewSet(Base_CreateViewSet):
+    model = RocketMQ
+    form_class = forms.MqForm
+    template_name = 'api/mq_form.html'
+    success_url = reverse_lazy('mq-list')
+
+class MQ_UpdateViewSet(Base_UpdateViewSet):
+    model = RocketMQ
+    form_class = forms.MqForm
+    success_url = reverse_lazy('mq-list')
+    template_name = 'api/mq_form.html'
+
+
+
 class Item_name_ViewSet(Base_ListViewSet):
     Item_name.objects.all().count()
     model = Item_name
@@ -638,6 +729,16 @@ class DetailView(TemplateView):
         context['tfs_name'] = u'tfs'
         context['tfs_count']=detail.tfs.all().count()
         context['tfs']=detail.tfs.all()
+        context['zookeeper_name'] = u'zookeeper'
+        context['zookeeper_count']=detail.zookeeper.all().count()
+        context['zookeeper']=detail.zookeeper.all()
+        context['kafka_name'] = u'kafka'
+        context['kafka_count']=detail.kafka.all().count()
+        context['kafka']=detail.kafka.all()
+        context['mq_name'] = u'mq'
+        context['mq_count']=detail.mq.all().count()
+        context['mq']=detail.mq.all()
+
         context['remark']=detail.remark
         context['upstream']=detail.upstream
         context['location']=detail.item.location
@@ -647,6 +748,137 @@ class DetailView(TemplateView):
         context['check_list']=Item_check.objects.filter(item=detail.item)
 
         return context
+
+
+def Item_query(req):
+    try:
+        name=req.GET['name']
+        host=Ipv4Address.objects.get(name=name)
+        item_list=[]
+        for m in host.front.all():
+                front_tmp={}
+                front_tmp['item']=m.item
+                front_tmp['app']=m.app.content
+                front_tmp['name']='front'
+                front_tmp['link']=name
+                item_list.append(front_tmp)
+
+        for m in host.mysql_link.select_related().all():
+            for mysql_n in m.mysql.all():
+                mysql_tmp={}
+                mysql_tmp['item']=mysql_n.item
+                mysql_tmp['app']=mysql_n.app.content
+                mysql_tmp['name']='mysql'
+                mysql_tmp['link']=m
+                item_list.append(mysql_tmp)
+
+        for m in host.app_link.select_related().all():
+            for app_n in m.app.all():
+                app_tmp={}
+                app_tmp['item']=app_n.item
+                app_tmp['app']=app_n.app.content
+                app_tmp['name']='app'
+                app_tmp['link']=m
+                item_list.append(app_tmp)
+
+        for m in host.redis_link.select_related().all():
+            for redis_n in m.redis.all():
+                redis_tmp={}
+                redis_tmp['item']=redis_n.item
+                redis_tmp['app']=redis_n.app.content
+                redis_tmp['name']='redis'
+                redis_tmp['link']=m
+                item_list.append(redis_tmp)
+        for m in host.codis_link.select_related().all():
+            for codis_n in m.codis.all():
+                codis_tmp={}
+                codis_tmp['item']=codis_n.item
+                codis_tmp['app']=codis_n.app.content
+                codis_tmp['name']='codis'
+                codis_tmp['link']=m
+                item_list.append(codis_tmp)
+        for m in host.sentinel_link.select_related().all():
+            for sentinel_n in m.sentinel.all():
+                sentinel_tmp={}
+                sentinel_tmp['item']=sentinel_n.item
+                sentinel_tmp['app']=sentinel_n.app.content
+                sentinel_tmp['name']='sentinel'
+                sentinel_tmp['link']=m
+                item_list.append(sentinel_tmp)
+        for m in host.memcache_link.select_related().all():
+            for memcache_n in m.memcache.all():
+                memcache_tmp={}
+                memcache_tmp['item']=memcache_n.item
+                memcache_tmp['app']=memcache_n.app.content
+                memcache_tmp['name']='memcache'
+                memcache_tmp['link']=m
+                item_list.append(memcache_tmp)
+        for m in host.es_link.select_related().all():
+            for es_n in m.es.all():
+                es_tmp={}
+                es_tmp['item']=es_n.item
+                es_tmp['app']=es_n.app.content
+                es_tmp['name']='es'
+                es_tmp['link']=m
+                item_list.append(es_tmp)
+        for m in host.mcq_link.select_related().all():
+            for mcq_n in m.mcq.all():
+                mcq_tmp={}
+                mcq_tmp['item']=mcq_n.item
+                mcq_tmp['app']=mcq_n.app.content
+                mcq_tmp['name']='mcq'
+                mcq_tmp['link']=m
+                item_list.append(mcq_tmp)
+        for m in host.tfs_link.select_related().all():
+            for tfs_n in m.tfs.all():
+                tfs_tmp={}
+                tfs_tmp['item']=tfs_n.item
+                tfs_tmp['app']=tfs_n.app.content
+                tfs_tmp['name']='tfs'
+                tfs_tmp['link']=m
+                item_list.append(tfs_tmp)
+        for m in host.zoo_link.select_related().all():
+            for zoo_n in m.zookeeper.all():
+                zoo_tmp={}
+                zoo_tmp['item']=zoo_n.item
+                zoo_tmp['app']=zoo_n.app.content
+                zoo_tmp['name']='zookeeper'
+                zoo_tmp['link']=m
+                item_list.append(zoo_tmp)
+        for m in host.kafka_link.select_related().all():
+            for kafka_n in m.kafka.all():
+                kafka_tmp={}
+                kafka_tmp['item']=kafka_n.item
+                kafka_tmp['app']=kafka_n.app.content
+                kafka_tmp['name']='kafka'
+                kafka_tmp['link']=m
+                item_list.append(kafka_tmp)
+        for m in host.mq_link.select_related().all():
+            for mq_n in m.mq.all():
+                mq_tmp={}
+                mq_tmp['item']=mq_n.item
+                mq_tmp['app']=mq_n.app.content
+                mq_tmp['name']='RocketMQ'
+                mq_tmp['link']=m
+                item_list.append(mq_tmp)
+        response = render(req,'api/item_query.html',
+                          {
+                              "item_list":item_list,
+                              "item_count":list(set([x.get('item') for x in item_list])).__len__(),
+                              "app_count":list(set([x.get('app') for x in item_list])).__len__(),
+                              "name_count":list(set([x.get('name') for x in item_list])).__len__(),
+                              "link_count":list(set([x.get('link') for x in item_list])).__len__(),
+                                                  }
+                          )
+        return response
+    except:
+        item_list=[]
+        response = render(req,'api/item_query.html',{"item_list":item_list,
+                                          }
+                  )
+        return response
+
+
 
 class Item_deploy_detailView(TemplateView):
     template_name = u'api/deploy_detail.html'

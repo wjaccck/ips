@@ -154,6 +154,11 @@
         <span class="title">基础数据(杭州)</span>
             <ul class="sub-menu">
                 <li>
+                    <a  href="{% url 'item-fun' %} ">
+                     项目反查
+                    </a>
+                </li>
+                <li>
                     <a  href="{% url 'fun-detail' %} ">
                      反查
                     </a>
@@ -218,8 +223,22 @@
                      Tfs 信息
                     </a>
                 </li>
+                <li>
+                    <a  href="{% url 'zookeeper-list' %} ">
+                     Zookeeper
+                    </a>
+                </li>
+                <li>
+                    <a  href="{% url 'kafka-list' %} ">
+                     Kafka
+                    </a>
+                </li>
 
-
+                <li>
+                    <a  href="{% url 'mq-list' %} ">
+                     RocketMQ
+                    </a>
+                </li>
             </ul>
         </a>
     </li>
