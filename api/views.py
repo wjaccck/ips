@@ -52,7 +52,7 @@ class Mysql_ApiViewSet(viewsets.ModelViewSet):
     serializer_class = Mysqlserializers
     permission_classes = (permissions.DjangoModelPermissions,)
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, )
-    filter_fields = ('host',)
+    filter_fields = ('host','name','port')
     search_fields = ('^host__name', )
 
 class Application_ApiViewSet(viewsets.ModelViewSet):
@@ -70,7 +70,7 @@ class Codis_ApiViewSet(viewsets.ModelViewSet):
     serializer_class = Codisserializers
     permission_classes = (permissions.DjangoModelPermissions,)
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, )
-    filter_fields = ('host',)
+    filter_fields = ('host','port')
     search_fields = ('^host__name', )
 
 class Sentinel_ApiViewSet(viewsets.ModelViewSet):
@@ -79,7 +79,7 @@ class Sentinel_ApiViewSet(viewsets.ModelViewSet):
     serializer_class = Sentinelserializers
     permission_classes = (permissions.DjangoModelPermissions,)
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, )
-    filter_fields = ('host',)
+    filter_fields = ('host','port')
     search_fields = ('^host__name', )
 
 class Redis_ApiViewSet(viewsets.ModelViewSet):
@@ -88,7 +88,7 @@ class Redis_ApiViewSet(viewsets.ModelViewSet):
     serializer_class = Redisserializers
     permission_classes = (permissions.DjangoModelPermissions,)
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, )
-    filter_fields = ('host',)
+    filter_fields = ('host','port')
     search_fields = ('^host__name', )
 
 class Memcached_ApiViewSet(viewsets.ModelViewSet):

@@ -30,6 +30,7 @@
                             <h4>涉及应用部署共{{ app_count }}</h4>
                             <h4>涉及数据库MYSQL共{{ mysql_count }}</h4>
                             <h4>涉及缓存共{{ redis_cache_count }}</h4>
+                            <h4>涉及地址{{ all_host_len }}</h4>
                     </p>
                 </div>
                 </div>
@@ -48,8 +49,6 @@
                                     {% for m in mysql_list %}
                                         <br>
                                                 {{ m }}
-
-                                        </br>
                                     {% endfor %}
 
                                 </div>
@@ -63,15 +62,13 @@
                             <div class="display">
                                 <div class="number">
 {#                                    <h3 class="font-red-haze">{{ app_list }}</h3>#}
-                                    <small>nginx</small>
+                                    <small>front</small>
                                     <br>
 
                                     </br>
                                     {% for m in front_list %}
                                         <br>
                                                 {{ m }}
-
-                                        </br>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -84,15 +81,13 @@
                             <div class="display">
                                 <div class="number">
 {#                                    <h3 class="font-blue-sharp">{{ env_list }}</h3>#}
-                                    <small>app</small>
+                                    <small>站点</small>
                                     <br>
 
                                     </br>
-                                    {% for m in app_list %}
+                                    {% for m in site_list %}
                                         <br>
                                                 {{ m }}
-
-                                        </br>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -112,8 +107,6 @@
                                     {% for m in redis_cache_list %}
                                         <br>
                                                 {{ m }}
-
-                                        </br>
                                     {% endfor %}
 
                                 </div>

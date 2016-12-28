@@ -20,10 +20,12 @@ class Ipv4Network(UniqueNameDescModel):
         ordering = ['name', ]
 
 class Machine(CommonModel,IDC_BASE):
+    mark=models.ForeignKey(Ipv4Address,related_name='mark',blank=True,null=True)
     ips=models.ManyToManyField(Ipv4Address)
     name=models.CharField(max_length=100)
     memory=models.IntegerField(blank=True)
     cpu=models.IntegerField(blank=True)
+    disk_info=models.CharField(max_length=200,blank=True)
     product=models.CharField(max_length=100,verbose_name=u'服务器类型')
     machine_id=models.CharField(max_length=200,blank=True,null=True)
     serial=models.CharField(max_length=200,blank=True,null=True)
@@ -59,6 +61,16 @@ class Type_name(CommonModel,API_BASE):
     def verbose():
         return u'前端类型'
 
+class Resource_type(CommonModel,API_BASE):
+    content=models.CharField(max_length=50,unique=True)
+    alias=models.CharField(max_length=50,unique=True)
+    def __unicode__(self):
+        return self.content
+    @staticmethod
+    def verbose():
+        return u'资源类型'
+
+
 class Nginx(CommonModel,ITEM_BASE):
     host=models.ForeignKey(Ipv4Address,related_name='nginx_link')
     type=models.ForeignKey(Type_name)
@@ -92,8 +104,8 @@ class Mysql(Link_info,API_BASE):
     name=models.CharField(max_length=50)
     host=models.ForeignKey(Ipv4Address,related_name='mysql_link')
     slaveof=models.ManyToManyField(Ipv4Address,blank=True,related_name='mysql_slave')
-    # proxy_host=models.ForeignKey(Ipv4Address,blank=True,related_name='proxy_host')
-    # proxy_port=models.CharField(max_length=50,blank=True,related_name='proxy_port')
+    # proxy_host=models.ForeignKey(Ipv4Address,blank=True,default='',related_name='proxy_host')
+    # proxy_port=models.CharField(max_length=50,blank=True)
     def __unicode__(self):
         # if self.proxy_host:
         return "%s:%s/%s" %(self.host.name,self.port,self.name)
@@ -150,6 +162,8 @@ class Application(Link_info,API_BASE):
     def verbose():
         return u'应用信息'
 
+
+
 class Redis(Link_info,API_BASE):
     host=models.ForeignKey(Ipv4Address,related_name='redis_link')
     slaveof=models.ManyToManyField(Ipv4Address,blank=True,related_name='redis_slave')
@@ -170,6 +184,31 @@ class Sentinel(Link_info,API_BASE):
     @staticmethod
     def verbose():
         return u'Sentinel'
+
+# class App_Resource(API_BASE):
+#     host=models.ForeignKey(Ipv4Address,related_name='')
+#     resource_type=models.ForeignKey(Resource_type)
+#     machine=models.ForeignKey(Machine,related_name='machine')
+#     cpu=models.IntegerField(blank=True)
+#     memory=models.IntegerField(blank=True,verbose_name='单位为G')
+#     disk=models.IntegerField(blank=True,verbose_name='单位为G')
+#     belongto=models.CharField(max_length=25)
+#     @staticmethod
+#     def verbose():
+#         return u'resource'
+
+#
+# class Resource(API_BASE):
+#     machine=models.ForeignKey(Machine,related_name='machine')
+#     mark=models.ForeignKey(Ipv4Address,related_name='mark')
+#     cpu=models.IntegerField(blank=True)
+#     memory=models.IntegerField(blank=True,verbose_name='单位为G')
+#     disk=models.IntegerField(blank=True,verbose_name='单位为G')
+#     ipaddresses=models.ManyToManyField(Ipv4Address)
+#     belongto=models.CharField(max_length=25)
+#     @staticmethod
+#     def verbose():
+#         return u'resource'
 
 class Memcached(Link_info,API_BASE):
     host=models.ForeignKey(Ipv4Address,related_name='memcache_link')

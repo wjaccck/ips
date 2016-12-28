@@ -105,7 +105,7 @@
                                         <td>{{ m.detail }}</td>
                                         <td>{{ m.created_date |date:'Y-m-d H:i:s' }}</td>
                                         {% if user.is_superuser %}
-                                        <td><a  href="{% url 'codis-update' m.id %} ">修改</a></td>
+                                        <td><a  href="{% url 'redis-update' m.id %} ">修改</a></td>
                                         {% endif %}
 {#                                        <td><a  href="{% url 'name-list' %}?app={{ m.content }}">详情</a></td>#}
                                     </tr>

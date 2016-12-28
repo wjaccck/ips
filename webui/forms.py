@@ -19,6 +19,7 @@ class MachineForm(forms.ModelForm):
     name=forms.CharField(label='name',max_length=100,widget=forms.TextInput({'class': 'form-control'}))
     memory=forms.IntegerField(label='memory',required=False,widget=forms.TextInput({'class': 'form-control'}))
     cpu=forms.IntegerField(label='cpu',required=False,widget=forms.TextInput({'class': 'form-control'}))
+    disk_info=forms.CharField(label='disk_info',required=False,widget=forms.TextInput({'class': 'form-control'}))
     product=forms.CharField(label='product',max_length=100,widget=forms.TextInput({'class': 'form-control'}))
     system_id=forms.CharField(label='system',max_length=50,widget=forms.TextInput({'class': 'form-control'}))
     machine_id=forms.CharField(label='machine_id',max_length=200,required=False,widget=forms.TextInput({'class': 'form-control'}))
@@ -31,10 +32,12 @@ class MachineForm(forms.ModelForm):
     class Meta:
         model = Machine
         fields = (
+            'mark',
             'ips',
             'name',
             'memory',
             'cpu',
+            'disk_info',
             'product',
             'system_id',
             'machine_id',
@@ -46,6 +49,7 @@ class MachineForm(forms.ModelForm):
         )
         widgets = {
             'ips': IpsModelSelect2MultipleWidget,
+            'mark': IpModelSelect2Widget,
         }
 
 class SiteForm(forms.ModelForm):

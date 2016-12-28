@@ -252,9 +252,16 @@ class Mysql_ViewSet(Base_ListViewSet):
             keyword=self.request.GET['keyword']
         except:
             keyword=''
-
+        query_list=[]
         if keyword:
-            return Mysql.objects.select_related().filter(host__name=keyword)
+            query_list.append(Q(host__name=keyword))
+        try:
+            name=self.request.GET['name']
+            query_list.append(Q(name__icontains=name))
+        except:
+            pass
+        if query_list:
+            return list(set(Mysql.objects.select_related().filter(reduce(operator.and_, query_list))))
         else:
             return Mysql.objects.all()
 
@@ -640,9 +647,16 @@ class Item_list_ViewSet(Base_ListViewSet):
             keyword=self.request.GET['keyword']
         except:
             keyword=''
+        query_list=[]
         if keyword:
-            return Item_list.objects.select_related().filter(item__module__icontains=keyword)
-
+            query_list.append(Q(item__module__icontains=keyword))
+        try:
+            app=self.request.GET['app']
+            query_list.append(Q(app__content=app))
+        except:
+            pass
+        if query_list:
+            return list(set(Item_list.objects.select_related().filter(reduce(operator.and_, query_list))))
         else:
             return Item_list.objects.select_related().all()
 
@@ -746,6 +760,7 @@ class DetailView(TemplateView):
         context['check_count']=Item_check.objects.filter(item=detail.item).count()
         # context['check_name']=Item_check.objects.filter(item=detail.item).values('type').distinct()
         context['check_list']=Item_check.objects.filter(item=detail.item)
+        context['active']=u'item'
 
         return context
 
@@ -868,17 +883,39 @@ def Item_query(req):
                               "app_count":list(set([x.get('app') for x in item_list])).__len__(),
                               "name_count":list(set([x.get('name') for x in item_list])).__len__(),
                               "link_count":list(set([x.get('link') for x in item_list])).__len__(),
+                              "active":u'api',
                                                   }
                           )
         return response
     except:
         item_list=[]
         response = render(req,'api/item_query.html',{"item_list":item_list,
+                                                     "active":u'api',
                                           }
                   )
         return response
 
 
+class Item_ComponentsView(TemplateView):
+    template_name = u'api/components.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(Item_ComponentsView, self).get_context_data(**kwargs)
+        all_item=Item_list.objects.select_related().all()
+        context['mysql'] = [ x for x in all_item if x.mysql_link.all().__len__() != 0]
+        context['redis'] = [ x for x in all_item if x.redis_link.all().__len__() != 0]
+        context['codis'] = [ x for x in all_item if x.codis_link.all().__len__() != 0]
+        context['sentinel'] = [ x for x in all_item if x.sentinel.all().__len__() != 0]
+        context['zookeeper'] = [ x for x in all_item if x.zookeeper.all().__len__() != 0]
+        context['kafka'] = [ x for x in all_item if x.kafka.all().__len__() != 0]
+        context['mq'] = [ x for x in all_item if x.mq.all().__len__() != 0]
+        context['memcache'] = [ x for x in all_item if x.memcache.all().__len__() != 0]
+        context['es'] = [ x for x in all_item if x.es.all().__len__() != 0]
+        context['mcq'] = [ x for x in all_item if x.mcq.all().__len__() != 0]
+        context['tfs'] = [ x for x in all_item if x.tfs.all().__len__() != 0]
+        context['front'] = [ x for x in all_item if x.front.all().__len__() != 0]
+        context['active'] = u'item'
+        return context
 
 class Item_deploy_detailView(TemplateView):
     template_name = u'api/deploy_detail.html'
@@ -888,39 +925,166 @@ class Item_deploy_detailView(TemplateView):
         all_item=Item_list.objects.select_related().all()
         site_all=list(set([x.app for x in all_item]))
         mysql_all_list=[x.mysql_link.all() for x in all_item]
+        all_host=[]
         mysql_all=[]
+        ### get mysql
         for mysql_p in mysql_all_list:
             for mysql_p_n in mysql_p:
                 mysql_all.append(mysql_p_n)
+
+        for mysql_host in mysql_all:
+            all_host.append(mysql_host.host.name)
+            for mysql_slave in mysql_host.slaveof.all():
+                all_host.append(mysql_slave.name)
+
+        ### get front
         front_all_list=[x.front.all() for x in all_item]
         front_all=[]
         for front_p in front_all_list:
             for front_p_n in front_p:
                 front_all.append(front_p_n)
+
+        for front_host in front_all:
+            all_host.append(front_host.name)
+
+
+        ## get app link
         app_all_list=[x.app_link.all() for x in all_item]
         app_all=[]
         for app_p in app_all_list:
             for app_p_n in app_p:
                 app_all.append(app_p_n.host.name)
+
+        for app_host in app_all:
+            all_host.append(app_host)
+
+
+        ### get redis
         redis_all_list=[x.redis_link.all() for x in all_item]
         redis_all=[]
         for redis_p in redis_all_list:
             for redis_p_n in redis_p:
                 redis_all.append(redis_p_n)
+
+        for redis_host in redis_all:
+            all_host.append(redis_host.host.name)
+            for redis_slave in redis_host.slaveof.all():
+                all_host.append(redis_slave.name)
+
+
+
+        ### get sentinel
         sentinel_all_list=[x.sentinel.all() for x in all_item]
         sentinel_all=[]
         for sentinel_p in sentinel_all_list:
             for sentinel_p_n in sentinel_p:
                 sentinel_all.append(sentinel_p_n)
+
+        for sentinel_host in sentinel_all:
+            all_host.append(sentinel_host.host.name)
+            for sentinel_slave in sentinel_host.slaveof.all():
+                all_host.append(sentinel_slave.name)
+
+        ### get codis
         codis_all_list=[x.codis_link.all() for x in all_item]
         codis_all=[]
         for codis_p in codis_all_list:
             for codis_p_n in codis_p:
                 codis_all.append(codis_p_n)
+
+        for codis_host in codis_all:
+            all_host.append(codis_host.host.name)
+            for codis_slave in codis_host.slaveof.all():
+                all_host.append(codis_slave.name)
+
+
+
+        ### get mc
+        mc_all_list=[x.memcache.all() for x in all_item]
+        mc_all=[]
+        for mc_p in mc_all_list:
+            for mc_p_n in mc_p:
+                mc_all.append(mc_p_n)
+
+        for mc_host in mc_all:
+            all_host.append(mc_host.host.name)
+
+
+        # mc_all_list=[x.memcache.all() for x in all_item]
+        # mc_all=[]
+        # for mc_p in mc_all_list:
+        #     for mc_p_n in mc_p:
+        #         mc_all.append(mc_p_n)
+
+
+        ### get es
+
+        es_all_list=[x.es.all() for x in all_item]
+        es_all=[]
+        for es_p in es_all_list:
+            for es_p_n in es_p:
+                es_all.append(es_p_n)
+
+        for es_host in es_all:
+            all_host.append(es_host.host.name)
+
+        ## get mcq
+        mcq_all_list=[x.mcq.all() for x in all_item]
+        mcq_all=[]
+        for mcq_p in mcq_all_list:
+            for mcq_p_n in mcq_p:
+                mcq_all.append(mcq_p_n)
+
+        for mcq_host in mcq_all:
+            all_host.append(mcq_host.host.name)
+
+        ## get tfs
+        tfs_all_list=[x.tfs.all() for x in all_item]
+        tfs_all=[]
+        for tfs_p in tfs_all_list:
+            for tfs_p_n in tfs_p:
+                tfs_all.append(tfs_p_n)
+
+        for tfs_host in tfs_all:
+            all_host.append(tfs_host.host.name)
+
+        ### get zookeeper
+
+        zoo_all_list=[x.zookeeper.all() for x in all_item]
+        zoo_all=[]
+        for zoo_p in zoo_all_list:
+            for zoo_p_n in zoo_p:
+                zoo_all.append(zoo_p_n)
+
+        for zoo_host in zoo_all:
+            all_host.append(zoo_host.host.name)
+
+
+        ### get kafka
+        kafka_all_list=[x.kafka.all() for x in all_item]
+        kafka_all=[]
+        for kafka_p in kafka_all_list:
+            for kafka_p_n in kafka_p:
+                kafka_all.append(kafka_p_n)
+
+
+        for kafka_host in kafka_all:
+            all_host.append(kafka_host.host.name)
+        ### get mq
+        mq_all_list=[x.mq.all() for x in all_item]
+        mq_all=[]
+        for mq_p in mq_all_list:
+            for mq_p_n in mq_p:
+                mq_all.append(mq_p_n)
+
+        for mq_host in mq_all:
+            all_host.append(mq_host.host.name)
+
         all_redis_cache=[]
         all_redis_cache.extend(redis_all)
         all_redis_cache.extend(sentinel_all)
         all_redis_cache.extend(codis_all)
+        all_redis_cache.extend(mc_all)
         context['site_count'] = site_all.__len__()
         context['site_list'] = site_all
         context['mysql_count'] = list(set(mysql_all)).__len__()
@@ -931,6 +1095,9 @@ class Item_deploy_detailView(TemplateView):
         context['app_list'] = list(set(app_all))
         context['redis_cache_count'] = list(set(all_redis_cache)).__len__()
         context['redis_cache_list'] = list(set(all_redis_cache))
+        context['all_host_len']=list(set(all_host)).__len__()
+        context['all_host']=list(set(all_host))
+        context['active']=u'item'
         return context
 
 
@@ -960,6 +1127,7 @@ class Fun_queryView(TemplateView):
             summary_list=['mysql','app','redis','codis','sentinel','memcache','es','mcq','tfs']
             summary_info=[ "{0}:{1}".format(x,context.get(x).count()) for x in summary_list if context.get(x).count()!=0]
             context['summary']='|'.join(summary_info)
+            context['active']=u'api'
 
             return context
         else:

@@ -10,6 +10,7 @@ from .models import Ipv4Address, Ipv4Network,Machine,Site,Nginx,Type_name,Tech\
 
 class MachineSerializer(serializers.HyperlinkedModelSerializer):
     ips=serializers.SlugRelatedField(queryset=Ipv4Address.objects.all(), many=True,slug_field='name')
+    mark=serializers.SlugRelatedField(queryset=Ipv4Address.objects.all(),slug_field='name')
     class Meta:
         model = Machine
 
@@ -79,11 +80,13 @@ class Redisserializers(serializers.HyperlinkedModelSerializer):
 
 class Codisserializers(serializers.HyperlinkedModelSerializer):
     host=serializers.SlugRelatedField(queryset=Ipv4Address.objects.all(),slug_field='name')
+    slaveof = serializers.StringRelatedField(many=True)
     class Meta:
         model = Codis
 
 class Sentinelserializers(serializers.HyperlinkedModelSerializer):
     host=serializers.SlugRelatedField(queryset=Ipv4Address.objects.all(),slug_field='name')
+    slaveof = serializers.StringRelatedField(many=True)
     class Meta:
         model = Sentinel
 
@@ -130,6 +133,11 @@ class Item_listserializers(serializers.ModelSerializer):
     zookeeper=serializers.StringRelatedField(many=True)
     kafka=serializers.StringRelatedField(many=True)
     mq=serializers.StringRelatedField(many=True)
+    mysql_slave = serializers.SerializerMethodField(read_only=True)
+    codis_slave = serializers.SerializerMethodField(read_only=True)
+    sentinel_slave = serializers.SerializerMethodField(read_only=True)
+    redis_slave = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Item_list
 
@@ -140,3 +148,34 @@ class Item_listserializers(serializers.ModelSerializer):
     def get_deploy_dir(self, obj):
         return obj.item.location
 
+    def get_mysql_slave(self, obj):
+        result=[]
+        if obj.mysql_link.all().__len__()!=0:
+            for m in obj.mysql_link.all():
+                result.extend([ x.name for x in m.slaveof.all() ])
+
+        return list(set(result))
+
+    def get_codis_slave(self, obj):
+        result=[]
+        if obj.codis_link.all().__len__()!=0:
+            for m in obj.codis_link.all():
+                result.extend([ x.name for x in m.slaveof.all() ])
+
+        return list(set(result))
+
+    def get_sentinel_slave(self, obj):
+        result=[]
+        if obj.sentinel.all().__len__()!=0:
+            for m in obj.sentinel.all():
+                result.extend([ x.name for x in m.slaveof.all() ])
+
+        return list(set(result))
+
+    def get_redis_slave(self, obj):
+        result=[]
+        if obj.redis_link.all().__len__()!=0:
+            for m in obj.redis_link.all():
+                result.extend([ x.name for x in m.slaveof.all() ])
+
+        return list(set(result))

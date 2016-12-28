@@ -89,7 +89,12 @@
                                             <td>{{ mysql_name }}</td>
                                             <td>{{ mysql_count }}</td>
                                             <td>{% for mysql_p in mysql  %}
-                                                    {{ mysql_p }}<br>
+                                                    {{ mysql_p }}
+                                                    |slaveof:
+                                                        {% for slave in mysql_p.slaveof.all %}
+                                                            {{ slave }},
+                                                        {% endfor %}
+                                                <br>
                                                 {% endfor %}
                                             </td>
                                     </tr>
@@ -99,7 +104,12 @@
                                             <td>{{ redis_name }}</td>
                                             <td>{{ redis_count }}</td>
                                             <td>{% for redis_p in redis  %}
-                                                    {{ redis_p }}<br>
+                                                    {{ redis_p }}
+                                                        |slaveof:
+                                                        {% for slave in redis_p.slaveof.all %}
+                                                            {{ slave }},
+                                                        {% endfor %}
+                                                <br>
                                                 {% endfor %}
                                             </td>
                                     </tr>
@@ -109,7 +119,12 @@
                                             <td>{{ codis_name }}</td>
                                             <td>{{ codis_count }}</td>
                                             <td>{% for codis_p in codis  %}
-                                                    {{ codis_p }}<br>
+                                                    {{ codis_p }}
+                                                        |slaveof:
+                                                        {% for slave in codis_p.slaveof.all %}
+                                                            {{ slave }},
+                                                        {% endfor %}
+                                                <br>
                                                 {% endfor %}
                                             </td>
                                     </tr>
@@ -119,7 +134,12 @@
                                             <td>{{ sentinel_name }}</td>
                                             <td>{{ sentinel_count }}</td>
                                             <td>{% for sentinel_p in sentinel  %}
-                                                    {{ sentinel_p }}<br>
+                                                    {{ sentinel_p }}
+                                                        |slaveof:
+                                                        {% for slave in sentinel_p.slaveof.all %}
+                                                            {{ slave }},
+                                                        {% endfor %}
+                                                <br>
                                                 {% endfor %}
                                             </td>
                                     </tr>
