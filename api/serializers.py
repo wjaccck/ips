@@ -5,7 +5,7 @@ from rest_framework import serializers
 from netaddr import *
 from abstract.serializers import CommonHyperlinkedModelSerializer
 from .models import Ipv4Address, Ipv4Network,Machine,Site,Nginx,Type_name,Tech\
-    ,Mysql,Application,Codis,Sentinel,Memcached,Es,Mcq,Tfs,Item_name,Item_list,Redis
+    ,Mysql,Application,Codis,Sentinel,Memcached,Es,Mcq,Tfs,Item_name,Item_list,Redis,Version_history
 
 
 class MachineSerializer(serializers.HyperlinkedModelSerializer):
@@ -113,6 +113,17 @@ class Tfsserializers(serializers.HyperlinkedModelSerializer):
 class Item_nameserializers(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Item_name
+
+class Version_historyserializers(serializers.HyperlinkedModelSerializer):
+    # module=serializers.SlugRelatedField(queryset=Item_name.objects.all(),slug_field='content')
+    # project=serializers.CharField(default='shihui')
+    # file_name=serializers.CharField(allow_blank=True)
+    # file_url=serializers.URLField(allow_blank=True)
+    # config_name=serializers.CharField(allow_blank=True)
+    # config_url=serializers.URLField(allow_blank=True)
+    # latest_status=serializers.BooleanField(default=True)
+    class Meta:
+        model = Version_history
 
 class Item_listserializers(serializers.ModelSerializer):
     item = serializers.StringRelatedField()

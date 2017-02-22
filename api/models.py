@@ -2,8 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from abstract.models import CommonModel,UniqueNameDescModel,API_BASE,APPLY_BASE,IDC_BASE,ITEM_BASE
-
+from abstract.models import CommonModel,UniqueNameDescModel,API_BASE,APPLY_BASE,IDC_BASE,ITEM_BASE,HISTORY_BASE
 # Create your models here.
 
 
@@ -233,6 +232,7 @@ class Tfs(Link_info,API_BASE):
     @staticmethod
     def verbose():
         return u'TFS'
+
 class Item_name(CommonModel,API_BASE):
     content=models.CharField(max_length=50,db_index=True)
     module=models.CharField(max_length=50,blank=True,null=True)
@@ -252,6 +252,56 @@ class Item_name(CommonModel,API_BASE):
     @staticmethod
     def verbose():
         return u'项目列表'
+
+class Version_history(CommonModel,APPLY_BASE):
+    project=models.CharField(max_length=50,default='shihui')
+    module=models.ForeignKey(Item_name)
+    environment=models.CharField(max_length=50)
+    version=models.CharField(max_length=50)
+    build=models.CharField(max_length=50)
+    file_name=models.CharField(max_length=200,blank=True)
+    file_url=models.URLField(blank=True)
+    config_name=models.CharField(max_length=200,blank=True)
+    config_url=models.URLField(blank=True)
+    latest_status=models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return "%s:%s" %(self.module.content,self.version)
+
+    @staticmethod
+    def verbose():
+        return u'构建历史'
+
+    def save(self, *args, **kwargs):
+        Version_history.objects.filter(module=self.module).update(latest_status=False)
+        return super(Version_history, self).save(*args, **kwargs)
+
+
+class Ops_act_history(CommonModel,HISTORY_BASE):
+    title=models.CharField(max_length=50,verbose_name=u'类别')
+    operator=models.CharField(max_length=50,)
+    content=models.TextField(verbose_name=u'内容')
+    creator = models.ForeignKey('auth.user', related_name='%(app_label)s_%(class)s_creator', verbose_name='creator')
+
+    @staticmethod
+    def verbose():
+        return u'线上操作历史'
+    class Meta:
+        ordering=['-created_date']
+
+
+class Ops_plan_history(CommonModel,HISTORY_BASE):
+    title=models.CharField(max_length=50,verbose_name=u'类别')
+    operator=models.CharField(max_length=50,)
+    content=models.TextField(verbose_name=u'内容')
+    status=models.CharField(max_length=50)
+    creator = models.ForeignKey('auth.user', related_name='%(app_label)s_%(class)s_creator', verbose_name='creator')
+
+    @staticmethod
+    def verbose():
+        return u'运维追踪事务'
+    class Meta:
+        ordering=['-created_date']
 
 
 class Item_list(CommonModel,ITEM_BASE):

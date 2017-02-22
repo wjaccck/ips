@@ -1,6 +1,7 @@
 {% extends "webui/index.html" %}
 {% load staticfiles %}
 {% load bootstrap_pagination %}
+{% load webui_extras %}
 {% block username %}
 {{ username }}
 {% endblock %}
@@ -56,7 +57,7 @@
 
                         <div class="portlet-body">
                         {% if user.is_superuser %}
-                            <a href="{% url 'item-list-create' %}" class="btn btn-success">{{ create }}</a>
+                            <a href="{% url 'ops-plan-create' %}" class="btn btn-success">{{ create }}</a>
                         {% endif %}
                         <div class="table-responsive">
                             <table class="table table-bordered">
@@ -67,75 +68,25 @@
 									 ID
 								</th>
 								<th>
-									 项目
+									 Title
 								</th>
 								<th>
-									 app
+									 负责人
 								</th>
                                 <th>
-									 upstream
-								</th>
-								<th>
-									 tech
+                                    内容
+                                </th>
+                                <th>
+									 状态
 								</th>
                                 <th>
-									 研发负责人
-								</th>
-{#								<th>#}
-{#									 前端#}
-{#								</th>#}
-{#                                <th>#}
-{#									 后端#}
-{#								</th>#}
-{#                                <th>#}
-{#									 mysql#}
-{#								</th>#}
-{#                                <th>#}
-{#									 redis#}
-{#								</th>#}
-{#                                <th>#}
-{#									 codis#}
-{#								</th>#}
-{#                                <th>#}
-{#									 sentinel#}
-{#								</th>#}
-{##}
-{#                                <th>#}
-{#									 memcache#}
-{#								</th>#}
-{#                                <th>#}
-{#									 es#}
-{#								</th>#}
-{#                                <th>#}
-{#									 mcq#}
-{#								</th>#}
-{#                                <th>#}
-{#									 tfs#}
-{#								</th>#}
-{#                                <th>#}
-{#									 zookeeper#}
-{#								</th>#}
-{##}
-{#                                <th>#}
-{#									 kafka#}
-{#								</th>#}
-{##}
-{##}
-{#                                <th>#}
-{#									 mq#}
-{#								</th>#}
-{#                                <th>#}
-{#									 备注#}
-{#								</th>#}
-                                <th>
-									 详情
+									 创建日期
 								</th>
                                 {% if user.is_superuser %}
                                 <th>
                                     修改
                                 </th>
                                 {% endif %}
-
 {#                                <th>#}
 {#                                    详细列表#}
 {#                                </th>#}
@@ -145,34 +96,22 @@
                                 {% for m in object_list  %}
                                     <tr>
                                         <td>{{ m.id }}</td>
-                                        <td>{{ m.item }}</td>
-                                        <td>{{ m.app.content }}</td>
-                                        <td>{{ m.upstream }}</td>
-                                        <td>{{ m.tech.content }}</td>
-                                        <td>{{ m.item.dev_owner }}</td>
-{#                                        <td>{{ m.front.all.count }}</td>#}
-{#                                        <td>{{ m.app_link.all.count }}</td>#}
-{#                                        <td>{{ m.mysql_link.all.count }}</td>#}
-{#                                        <td>{{ m.redis_link.all.count }}</td>#}
-{#                                        <td>{{ m.codis_link.all.count }}</td>#}
-{#                                        <td>{{ m.sentinel.all.count }}</td>#}
-{#                                        <td>{{ m.memcache.all.count }}</td>#}
-{#                                        <td>{{ m.es.all.count }}</td>#}
-{#                                        <td>{{ m.mcq.all.count }}</td>#}
-{#                                        <td>{{ m.tfs.all.count }}</td>#}
-{#                                        <td>{{ m.zookeeper.all.count }}</td>#}
-{#                                        <td>{{ m.kafka.all.count }}</td>#}
-{#                                        <td>{{ m.mq.all.count }}</td>#}
-{#                                        <td>{{ m.remark }}</td>#}
-                                        <td><a  href="{% url 'item-list-detail' m.id %} ">详情</a></td>
+                                        <td>{{ m.title }}</td>
+                                        <td>{{ m.operator }}</td>
+                                        {% autoescape off %}
+                                        <td>{{ m.content | change_word }}</td>
+                                        {% endautoescape %}
+                                        <td>{{ m.status }}</td>
+                                        <td>{{ m.created_date |date:'Y-m-d H:i:s' }}</td>
                                         {% if user.is_superuser %}
-                                        <td><a  href="{% url 'item-list-update' m.id %} ">修改</a></td>
+                                        <td><a  href="{% url 'ops-plan-update' m.id %} ">修改</a></td>
                                         {% endif %}
+{#                                        <td><a  href="{% url 'name-list' %}?app={{ m.content }}">详情</a></td>#}
                                     </tr>
                                 {% endfor %}
 							</tbody>
 							</table>
-                            {% bootstrap_paginate page_obj %}
+                            {% bootstrap_paginate page_obj range=10 show_prev_next="false" show_first_last="true" %}
                             <div>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}. Size {{ page_obj.paginator.per_page }}.Total {{ page_obj.paginator.count }}</div>
 						</div>
 						</div>

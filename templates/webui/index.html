@@ -272,6 +272,49 @@
         </a>
     </li>
 
+
+        {% if active == 'history' %}
+            <li class="active">
+        {% else %}
+            <li>
+        {% endif %}
+        <a href="">
+        <i class="icon-home"></i>
+        <span class="title">历史</span>
+            <ul class="sub-menu">
+                <li>
+                    <a  href="{% url 'ops-act-history' %} ">
+                        线上操作
+                    </a>
+                </li>
+                <li>
+                    <a  href="{% url 'ops-plan' %}?status=进行中 ">
+                        运维跟踪事项
+                    </a>
+                </li>
+            </ul>
+        </a>
+    </li>
+
+
+        {% if active == 'check' %}
+            <li class="active">
+        {% else %}
+            <li>
+        {% endif %}
+        <a href="">
+        <i class="icon-home"></i>
+        <span class="title">检测</span>
+            <ul class="sub-menu">
+                <li>
+                    <a  href="{% url 'dns-check' %} ">
+                        DNS查询
+                    </a>
+                </li>
+            </ul>
+        </a>
+    </li>
+
 </ul>
 
 {% endblock %}

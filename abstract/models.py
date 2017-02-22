@@ -77,3 +77,12 @@ class APPLY_BASE(models.Model):
         abstract=True
 
 
+class HISTORY_BASE(models.Model):
+    pass
+    @staticmethod
+    def father():
+        return u'history'
+
+    class Meta:
+        abstract=True
+

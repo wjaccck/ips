@@ -23,6 +23,7 @@ router.register(r'es', views.Es_ApiViewSet)
 router.register(r'mcq', views.Mcq_ApiViewSet)
 router.register(r'tfs', views.Tfs_ApiViewSet)
 router.register(r'item_name', views.Item_name_ApiViewSet)
+router.register(r'version', views.Version_history_ApiViewSet)
 router.register(r'item_list', views.Item_list_ApiViewSet)
 
 urlpatterns = router.urls

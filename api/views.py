@@ -136,6 +136,14 @@ class Item_name_ApiViewSet(viewsets.ModelViewSet):
     filter_fields = ('content',)
     search_fields = ('^content', )
 
+class Version_history_ApiViewSet(viewsets.ModelViewSet):
+    http_method_names = [ 'get','post']
+    queryset = Version_history.objects.all()
+    serializer_class = Version_historyserializers
+    permission_classes = (permissions.DjangoModelPermissions,)
+    filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, )
+    filter_fields = ('module__content','version')
+
 class Item_list_ApiViewSet(viewsets.ModelViewSet):
     http_method_names = [ 'get','post']
     queryset = Item_list.objects.all()

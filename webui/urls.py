@@ -111,6 +111,20 @@ urlpatterns = [
     url(r'^item-check/update/(?P<pk>\d+)/$',login_required(views.Item_check_UpdateViewSet.as_view()),name='item-check-update'),
     url(r'^item-check/create/$',login_required(views.Item_check_CreateViewSet.as_view()),name='item-check-create'),
 
+    ### item-check
+    url(r'^ops-plan/$',login_required(views.Ops_plan_historyViewSet.as_view()),name='ops-plan'),
+    url(r'^ops-plan/update/(?P<pk>\d+)/$',login_required(views.Ops_plan_history_UpdateViewSet.as_view()),name='ops-plan-update'),
+    url(r'^ops-plan/create/$',login_required(views.Ops_plan_historyCreateViewSet.as_view()),name='ops-plan-create'),
+
+
+    ### item-check
+    url(r'^dns-check/$',login_required(views.DNS_checkView.as_view()),name='dns-check'),
+
+
+    ### ops-act-history
+    url(r'^ops-act-hisotry/$',login_required(views.Ops_act_historyViewSet.as_view()),name='ops-act-history'),
+    url(r'^ops-act-history/create/$',login_required(views.Ops_act_historyCreateViewSet.as_view()),name='ops-act-history-create'),
+
 
     ### docker
     url(r'^docker/$',login_required(views.Docker_list_ViewSet.as_view()),name='docker-list'),

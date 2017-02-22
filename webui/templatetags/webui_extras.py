@@ -7,3 +7,7 @@ def get_item(dictionary, key):
     # Usage: handling errors in templates
 
     return dictionary.get(key)
+
+@register.filter(name='change_word')
+def change(value):
+    return value.replace('\r\n','<br>')

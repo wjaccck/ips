@@ -5,6 +5,7 @@ from django.shortcuts import render,redirect
 # from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 # from django.http import HttpResponseRedirect
+from core.common import logger
 from django.db.models import Q
 from api.models import *
 from vanilla import ListView, CreateView, UpdateView, DeleteView,FormView
@@ -254,7 +255,7 @@ class Mysql_ViewSet(Base_ListViewSet):
             keyword=''
         query_list=[]
         if keyword:
-            query_list.append(Q(host__name=keyword))
+            query_list.append(Q(host__name=keyword)|Q(slaveof__name=keyword))
         try:
             name=self.request.GET['name']
             query_list.append(Q(name__icontains=name))
@@ -319,7 +320,7 @@ class Codis_ViewSet(Base_ListViewSet):
             keyword=''
 
         if keyword:
-            return Codis.objects.select_related().filter(host__name=keyword)
+            return Codis.objects.select_related().filter(Q(host__name=keyword)|Q(slaveof__name=keyword))
         else:
             return Codis.objects.all()
 
@@ -348,7 +349,7 @@ class Redis_ViewSet(Base_ListViewSet):
             keyword=''
 
         if keyword:
-            return Redis.objects.select_related().filter(host__name=keyword)
+            return Redis.objects.select_related().filter(Q(host__name=keyword)|Q(slaveof__name=keyword))
         else:
             return Redis.objects.all()
 
@@ -377,7 +378,7 @@ class Sentinel_ViewSet(Base_ListViewSet):
             keyword=''
 
         if keyword:
-            return Sentinel.objects.select_related().filter(host__name=keyword)
+            return Sentinel.objects.select_related().filter(Q(host__name=keyword)|Q(slaveof__name=keyword))
         else:
             return Sentinel.objects.all()
 
@@ -655,6 +656,11 @@ class Item_list_ViewSet(Base_ListViewSet):
             query_list.append(Q(app__content=app))
         except:
             pass
+        try:
+            dev_owner=self.request.GET['dev_owner']
+            query_list.append(Q(item__dev_owner__icontains=dev_owner))
+        except:
+            pass
         if query_list:
             return list(set(Item_list.objects.select_related().filter(reduce(operator.and_, query_list))))
         else:
@@ -665,6 +671,68 @@ class Item_list_CreateViewSet(Base_CreateViewSet):
     form_class = forms.Item_listForm
     template_name = 'api/item_list_form.html'
     success_url = reverse_lazy('item-list-list')
+
+
+
+class Ops_act_historyViewSet(Base_ListViewSet):
+    Ops_act_history.objects.all().count()
+    model = Ops_act_history
+    template_name = 'api/operator.html'
+    paginate_by = 10
+
+
+class Ops_act_historyCreateViewSet(Base_CreateViewSet):
+    model = Ops_act_history
+    form_class = forms.Ops_act_historyForm
+    template_name = 'api/operator_form.html'
+    success_url = reverse_lazy('ops-act-history')
+
+    def get_form(self, data = None, files = None, **kwargs):
+        kwargs['creator'] = self.request.user
+        return super(Ops_act_historyCreateViewSet, self).get_form(data, files, **kwargs)
+
+
+class Ops_plan_historyViewSet(Base_ListViewSet):
+    Ops_plan_history.objects.all().count()
+    model = Ops_plan_history
+    template_name = 'api/ops_plan.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        query_list=[]
+        try:
+            keyword=self.request.GET['keyword']
+            query_list.append(Q(title__icontains=keyword))
+        except:
+            pass
+
+        try:
+            status=self.request.GET['status']
+            query_list.append(Q(status=status))
+        except:
+            pass
+        if query_list:
+            return list(set(Ops_plan_history.objects.filter(reduce(operator.and_, query_list))))
+        else:
+            return Ops_plan_history.objects.all()
+
+
+
+class Ops_plan_history_UpdateViewSet(Base_UpdateViewSet):
+    model = Ops_plan_history
+    form_class = forms.Ops_plan_historyForm
+    success_url = reverse_lazy('ops-plan')
+    template_name = 'api/ops_plan_form.html'
+
+class Ops_plan_historyCreateViewSet(Base_CreateViewSet):
+    model = Ops_plan_history
+    form_class = forms.Ops_plan_historyForm
+    template_name = 'api/ops_plan_form.html'
+    success_url = reverse_lazy('ops-plan')
+
+    def get_form(self, data = None, files = None, **kwargs):
+        kwargs['creator'] = self.request.user
+        return super(Ops_plan_historyCreateViewSet, self).get_form(data, files, **kwargs)
 
 class Item_list_UpdateViewSet(Base_UpdateViewSet):
     model = Item_list
@@ -689,6 +757,10 @@ class Item_check_ViewSet(Base_ListViewSet):
             return Item_check.objects.select_related().filter(item__content__icontains=keyword)
         else:
             return Item_check.objects.select_related().all()
+
+
+
+
 
 class Item_check_CreateViewSet(Base_CreateViewSet):
     model = Item_check
@@ -876,6 +948,7 @@ def Item_query(req):
                 mq_tmp['name']='RocketMQ'
                 mq_tmp['link']=m
                 item_list.append(mq_tmp)
+
         response = render(req,'api/item_query.html',
                           {
                               "item_list":item_list,
@@ -928,9 +1001,9 @@ class Item_deploy_detailView(TemplateView):
         all_host=[]
         mysql_all=[]
         ### get mysql
-        for mysql_p in mysql_all_list:
-            for mysql_p_n in mysql_p:
-                mysql_all.append(mysql_p_n)
+        # for mysql_p in mysql_all_list:
+        #     for mysql_p_n in mysql_p:
+        #         mysql_all.append(mysql_p_n)
 
         for mysql_host in mysql_all:
             all_host.append(mysql_host.host.name)
@@ -1132,6 +1205,34 @@ class Fun_queryView(TemplateView):
             return context
         else:
             return context
+
+
+class DNS_checkView(TemplateView):
+    template_name = u'api/dns_check.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DNS_checkView, self).get_context_data(**kwargs)
+        try:
+            domain_name=self.request.GET['name']
+            import DNS
+            s = DNS.Request(name=domain_name, server='10.99.73.5')
+            resolve = s.req().answers
+            all_host=[x.get('data') for x in resolve if x.get('typename')=='A']
+            logger.debug(resolve)
+
+        except:
+            domain_name=None
+            all_host=[]
+        # context['domain_name'] = domain_name
+        # context['dns_report'] = all_host
+        # context['machine'] = Machine.objects.filter(Q(ips__name__in=all_host))
+        if domain_name:
+            context['result'] = [{"domain":domain_name,"data":x,"host":Machine.objects.filter(Q(ips__name=x))} for x in all_host]
+        else:
+            context['result']=[]
+        context['active']=u'check'
+        return context
+
 
 class Docker_list_ViewSet(Base_ListViewSet):
     Docker_list.objects.all().count()

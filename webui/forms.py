@@ -403,3 +403,62 @@ class Docker_listForm(forms.ModelForm):
             'tech':Tech_typeModelSelect2Widget,
         }
         exclude = ['created_date', 'modified_date']
+
+
+
+class Ops_act_historyForm(forms.ModelForm):
+    title = forms.ChoiceField(label='类型',choices=[
+        ('配置更改','配置更改'),
+        ('版本发布','版本发布'),
+        ('数据修改','数据修改'),
+        ('其他','其他')
+    ])
+    # title = forms.CharField(label='主题', max_length=50, widget=forms.TextInput({'class': 'form-control'}))
+    operator = forms.CharField(label='操作者', max_length=50, widget=forms.TextInput({'class': 'form-control'}))
+
+    def __init__(self, *args, **kwargs):
+        self.creator = kwargs.pop('creator', None)
+        super(Ops_act_historyForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        instance = super(Ops_act_historyForm, self).save(commit=False)
+        if self.creator:
+            instance.creator = self.creator
+        return instance.save()
+
+    class Meta:
+        fields = (
+            'title',
+            'operator',
+            'content',
+        )
+        model = Ops_act_history
+        exclude = ['created_date', 'modified_date']
+
+
+class Ops_plan_historyForm(forms.ModelForm):
+    # title = forms.CharField(label='主题', max_length=50, widget=forms.TextInput({'class': 'form-control'}))
+    operator = forms.CharField(label='负责人', max_length=50, widget=forms.TextInput({'class': 'form-control'}))
+    status = forms.ChoiceField(label='状态',choices=[
+        ('进行中','进行中'),
+        ('结束','结束')
+    ])
+    def __init__(self, *args, **kwargs):
+        self.creator = kwargs.pop('creator', None)
+        super(Ops_plan_historyForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        instance = super(Ops_plan_historyForm, self).save(commit=False)
+        if self.creator:
+            instance.creator = self.creator
+        return instance.save()
+
+    class Meta:
+        fields = (
+            'title',
+            'operator',
+            'content',
+            'status',
+        )
+        model = Ops_plan_history
+        exclude = ['created_date', 'modified_date']
