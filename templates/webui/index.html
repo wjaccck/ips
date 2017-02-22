@@ -160,14 +160,14 @@
             <ul class="sub-menu">
                 <li>
                     <a  href="{% url 'item-fun' %} ">
-                     项目反查
-                    </a>
-                </li>
-                <li>
-                    <a  href="{% url 'fun-detail' %} ">
                      反查
                     </a>
                 </li>
+{#                <li>#}
+{#                    <a  href="{% url 'fun-detail' %} ">#}
+{#                     反查#}
+{#                    </a>#}
+{#                </li>#}
 
                 <li>
                     <a  href="{% url 'item-name-list' %} ">
@@ -422,7 +422,7 @@
                                     {% for m in item_summary %}
                                         <br>
 {#                                                <a href="{% url item-name-list %}?dev_owner={{ m.name }}">{{ m.name }}({{ m.number }})<a>#}
-                                            <a  href="{% url 'item-name-list' %}?dev_owner={{ m.name }} ">
+                                            <a  href="{% url 'item-list-list' %}?dev_owner={{ m.name }} ">
                                                 {{ m.name }}({{ m.number }})
                                             </a>
                                         </br>
