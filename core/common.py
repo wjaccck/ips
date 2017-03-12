@@ -15,3 +15,18 @@ def req_post(host,port,path,data):
     #     code={"retcode":1,"message":result.read()}
     # conn.close()
     return (result.status,result.read())
+
+def get_result(status,content):
+    if status==0:
+        result={
+                "retcode":0,
+                "stdout":content,
+                "stderr":''
+                }
+    else:
+        result={
+                "retcode":status,
+                "stdout":'',
+                "stderr":content
+                }
+    return result

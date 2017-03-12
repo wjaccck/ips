@@ -142,7 +142,8 @@ urlpatterns = [
     url(r'^item_fun/$',login_required(views.Item_query),name='item-fun'),
     url(r'^components/$',login_required(views.Item_ComponentsView.as_view()),name='components-query'),
 
-
+    ### version post
+    url(r'^version/post/$', views.Create_VersionViewAdmin.as_view(), name='version-post'),
 
     url(r'^login/$',
         'django.contrib.auth.views.login',

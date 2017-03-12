@@ -1,26 +1,99 @@
 #coding=utf8
 from django.shortcuts import render,redirect
-# from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
+from rest_framework.permissions import IsAuthenticated
 # from rest_framework.decorators import api_view, permission_classes
-# from django.views.decorators.csrf import csrf_exempt
-# Create your views here.
-# from django.http import HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
 from core.common import logger
 from django.db.models import Q
 from api.models import *
 from vanilla import ListView, CreateView, UpdateView, DeleteView,FormView
 from django.http import HttpResponse,HttpResponseBadRequest,HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
-# import json
 import forms
 from django.views.generic import TemplateView,View
 # import datetime
-# from core.common import logger
-from django.db.models.loading import get_app,get_models,get_model
+import json
+from core.common import logger,get_result
 import operator
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
 from api.tasks import MissionTask
+from rest_framework.views import APIView
+
+def format_response(result):
+    logger.info('result: %s' % result)
+    if result:
+        return HttpResponse(json.dumps(result))
+    else:
+        return HttpResponse(json.dumps(get_result(1, 'error request')))
+
+class BaseViewAdmin(APIView):
+    http_method_names = ['post']
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def init(self, request):
+        pass
+
+    def run(self):
+        pass
+
+    def post(self, request, *args, **kwargs):
+        self.init(request)
+        return format_response(self.run())
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request)
+
+
+class MissionBaseViewAdmin(BaseViewAdmin):
+    project=None
+    module=None
+    environment=None
+    version=None
+    build=None
+    file_name=None
+    file_url=None
+    file_md5=None
+    config_name=None
+    config_url=None
+    config_md5=None
+
+    def init(self, request):
+        super(MissionBaseViewAdmin, self).init(request)
+        self.project = request.POST.get('project')
+        self.module = request.POST.get('module')
+        self.environment = request.POST.get('environment')
+        self.version = request.POST.get('version')
+        self.build = request.POST.get('build')
+        self.file_name = request.POST.get('file_name')
+        self.file_url = request.POST.get('file_url')
+        self.file_md5 = request.POST.get('file_md5')
+        self.config_name = request.POST.get('config_name')
+        self.config_url = request.POST.get('config_url')
+        self.config_md5 = request.POST.get('config_md5')
+
+
+class Create_VersionViewAdmin(MissionBaseViewAdmin):
+    def run(self):
+        try:
+            module=Item_name.objects.get(module=self.module)
+            Version_history.objects.filter(module=module,version=self.version).update(latest_status=False)
+            Version_history.objects.create(
+                project=self.project,
+                module=module,
+                environment=self.environment,
+                version=self.version,
+                build=self.build,
+                file_name=self.file_name,
+                file_url=self.file_url,
+                file_md5=self.file_md5,
+                config_name=self.config_name,
+                config_url=self.config_url,
+                config_md5=self.config_md5,
+            )
+            return get_result(0,'done')
+        except Exception,e:
+            return get_result(1,str(e))
 
 def index(req):
     if req.user.is_authenticated():
@@ -1001,9 +1074,9 @@ class Item_deploy_detailView(TemplateView):
         all_host=[]
         mysql_all=[]
         ### get mysql
-        # for mysql_p in mysql_all_list:
-        #     for mysql_p_n in mysql_p:
-        #         mysql_all.append(mysql_p_n)
+        for mysql_p in mysql_all_list:
+            for mysql_p_n in mysql_p:
+                mysql_all.append(mysql_p_n)
 
         for mysql_host in mysql_all:
             all_host.append(mysql_host.host.name)

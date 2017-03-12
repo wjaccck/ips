@@ -261,8 +261,10 @@ class Version_history(CommonModel,APPLY_BASE):
     build=models.CharField(max_length=50)
     file_name=models.CharField(max_length=200,blank=True)
     file_url=models.URLField(blank=True)
+    file_md5=models.URLField(blank=True)
     config_name=models.CharField(max_length=200,blank=True)
     config_url=models.URLField(blank=True)
+    config_md5=models.URLField(blank=True)
     latest_status=models.BooleanField(default=True)
 
     def __unicode__(self):
