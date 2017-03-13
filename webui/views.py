@@ -72,6 +72,28 @@ class MissionBaseViewAdmin(BaseViewAdmin):
         self.config_url = request.POST.get('config_url')
         self.config_md5 = request.POST.get('config_md5')
 
+class Get_VersionViewAdmin(BaseViewAdmin):
+    def run(self):
+        module=None
+        try:
+            module=self.request.GET['module']
+        except:
+            pass
+        if module:
+            try:
+                todo_version=Version_history.objects.get(module=module,latest_status=True)
+                send_data={
+                    "version":todo_version.version,
+                    "file_url":todo_version.file_url,
+                    "file_md5":todo_version.file_md5,
+                    "config_url":todo_version.config_url,
+                    "config_md5":todo_version.config_md5
+                }
+                return HttpResponse(json.dumps(get_result(0,send_data)))
+            except Exception,e:
+                return HttpResponseBadRequest(json.dumps(get_result(1,str(e))))
+        else:
+            return HttpResponseBadRequest(json.dumps(get_result(2,'no module send to filter')))
 
 class Create_VersionViewAdmin(MissionBaseViewAdmin):
     def run(self):
@@ -90,6 +112,7 @@ class Create_VersionViewAdmin(MissionBaseViewAdmin):
                 config_name=self.config_name,
                 config_url=self.config_url,
                 config_md5=self.config_md5,
+                latest_status=True
             )
             return get_result(0,'done')
         except Exception,e:

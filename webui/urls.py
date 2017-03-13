@@ -144,6 +144,7 @@ urlpatterns = [
 
     ### version post
     url(r'^version/post/$', views.Create_VersionViewAdmin.as_view(), name='version-post'),
+    url(r'^version/list/$', views.Get_VersionViewAdmin.as_view(), name='version-list'),
 
     url(r'^login/$',
         'django.contrib.auth.views.login',
