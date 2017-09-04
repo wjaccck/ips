@@ -33,7 +33,7 @@ class MissionTask(BaseTask):
         unreachable_list=[x.get('console_ip') for x in result if x.get('status')==2]
         for m in done_list:
             console_ip=m.get('console_ip')
-            console_host=Machine.objects.get(cosole_ip=self._get_ipv4(name=console_ip))
+            console_host=Machine.objects.get(console_ip=self._get_ipv4(name=console_ip))
             console_host.cpu=m.get('cpu')
             console_host.kernel=m.get('kernel')
             console_host.cpu_number=m.get('cpu_number')
