@@ -1273,7 +1273,44 @@ class Item_deploy_detailView(TemplateView):
         context['all_host']=list(set(all_host))
         context['active']=u'item'
         return context
+class Machine_detailView(TemplateView):
+    template_name = u'api/machine-detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(Machine_detailView, self).get_context_data(**kwargs)
+        try:
+            name=self.request.GET['name']
+            host=Ipv4Address.objects.get(name=name)
+        except:
+            host=''
+        if host:
+            machine=Machine.objects.get(console_ip=host)
+            context['ipv4'] = machine.ipv4.all()
+            context['cpu'] = machine.cpu
+            context['memory'] = machine.memory
+            context['kernel'] = machine.kernel
+            context['cpu_number'] = machine.cpu_number
+            context['vcpu_number'] = machine.vcpu_number
+            context['cpu_core'] = machine.cpu_core
+            context['hostname'] = machine.hostname
+            context['disk'] = machine.disk
+            context['swap'] = machine.swap
+            context['product'] = machine.product
+            context['selinux'] = machine.selinux
+            context['distribution'] = machine.distribution
+            context['distribution_version'] = machine.distribution_version
+            context['manufacturer'] = machine.manufacturer
+            context['serial'] = machine.serial
+            context['status'] = machine.status
+            context['idc'] = machine.idc
+            context['company'] = machine.company
+            context['console_ip'] = machine.console_ip.name
+            context['active']=u'api'
+            context['existed'] = True
+            return context
+        else:
+            context['existed'] = False
+            return context
 
 class Fun_queryView(TemplateView):
     template_name = u'api/fun_query.html'

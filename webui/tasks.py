@@ -40,7 +40,7 @@ class MissionTask(BaseTask):
             console_host.vcpu_number=m.get('vcpu_number')
             console_host.cpu_core=m.get('cpu_core')
             console_host.hostname=m.get('hostname')
-            console_host.memory=m.get('memory')
+            console_host.memory=m.get('ram_total')
             console_host.disk=m.get('disk_total')
             console_host.swap=m.get('swap')
             console_host.product=m.get('product')

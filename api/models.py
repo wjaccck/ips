@@ -37,7 +37,6 @@ class Machine(CommonModel,IDC_BASE):
     manufacturer=models.CharField(max_length=25, blank=True)
     serial = models.CharField(max_length=10, blank=True)
     status=models.IntegerField(blank=True,null=True)
-
     idc=models.CharField(max_length=50,blank=True)
     company=models.CharField(max_length=50,blank=True)
     def __unicode__(self):

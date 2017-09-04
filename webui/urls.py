@@ -141,6 +141,7 @@ urlpatterns = [
     url(r'^fun_query/$',login_required(views.Fun_queryView.as_view()),name='fun-detail'),
     url(r'^item_fun/$',login_required(views.Item_query),name='item-fun'),
     url(r'^components/$',login_required(views.Item_ComponentsView.as_view()),name='components-query'),
+    url(r'^machine-detail/$', login_required(views.Machine_detailView.as_view()), name='machine-detail'),
 
     ### version post
     url(r'^version/post/$', views.Create_VersionViewAdmin.as_view(), name='version-post'),
