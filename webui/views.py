@@ -124,7 +124,7 @@ def index(req):
         all_count=Machine.objects.filter(company='shihui').count()
         product_list=[ x.get('product') for x in Machine.objects.filter(company='shihui').values('product').distinct()]
         product=[{"name":x,"number":Machine.objects.filter(company='shihui',product=x).count()} for x in product_list]
-        sys_list=[ x.get('major_release') for x in Machine.objects.filter(company='shihui').values('major_release').distinct()]
+        sys_list=[ x.get('distribution_version') for x in Machine.objects.filter(company='shihui').values('distribution_version').distinct()]
         sys=[{"name":x,"number":Machine.objects.filter(company='shihui',major_release=x).count()} for x in sys_list]
         idc_detail=[{"name":x,"number":Machine.objects.filter(company='shihui',idc=x).count()} for x in idc_list]
         dev_owner=[ x.get('dev_owner') for x in Item_name.objects.all().values('dev_owner').distinct()]
