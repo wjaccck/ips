@@ -20,5 +20,6 @@ docker-py
 #django-auth-ldap
 django-import-export
 gunicorn
+ansible
 # Should use pip wheel to install
 # mysql-python

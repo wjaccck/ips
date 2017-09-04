@@ -19,7 +19,7 @@ class Ipv4Network(UniqueNameDescModel):
         ordering = ['name', ]
 
 class Machine(CommonModel,IDC_BASE):
-    console_ip=models.ForeignKey(Ipv4Address,related_name='console_ip')
+    console_ip=models.ForeignKey(Ipv4Address,related_name='console_ip',unique=True)
     ipv4=models.ManyToManyField(Ipv4Address,blank=True)
     cpu=models.CharField(max_length=100,blank=True)
     kernel=models.CharField(max_length=100,blank=True)
