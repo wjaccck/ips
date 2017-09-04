@@ -28,7 +28,7 @@ SECRET_KEY = 'q#sb(r=52zwc)*n(kbe74a6xjr@-gc#ukieb+d3u8s1+y9(f0b'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.99.69.35','10.99.69.36','ips.eju-inc.com']
 
 
 # Application definition
@@ -89,24 +89,24 @@ WSGI_APPLICATION = 'ips.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db10.sqlite3'),
-    }
-}
-
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'ips',
-#         'USER': 'ipsadmin',
-#         'PASSWORD': 'Eju@ips1',
-#         'HOST': '10.99.69.35',
-#         'PORT': '3306',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db1.sqlite3'),
 #     }
 # }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ips',
+        'USER': 'ipsadmin',
+        'PASSWORD': 'Eju@ips1',
+        'HOST': '10.99.69.35',
+        'PORT': '3306',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -160,15 +160,15 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
-    'c:\\work\\ips\\static',
+    'c:\\work\\open\\ips\\static',
     # '/opt/app/ips/static',
 )
 import djcelery
 from kombu import Exchange, Queue
 djcelery.setup_loader()
 # Celery Settings
-BROKER_URL = 'redis://ce645e80fedd0d5e6b264b3e424bffe0@10.99.69.35:6379/3'
-CELERY_RESULT_BACKEND = 'redis://ce645e80fedd0d5e6b264b3e424bffe0@10.99.69.35:6379/2'
+BROKER_URL = 'redis://:cc62601845fc3c66cdbb81915a871605@10.99.69.35:6379/3'
+CELERY_RESULT_BACKEND = 'redis://:cc62601845fc3c66cdbb81915a871605@10.99.69.35:6379/2'
 # CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 CELERY_QUEUES = (
     Queue('10.99.70.27'),
@@ -248,22 +248,22 @@ LOGOUT_REDIRECT_URL='/login/'
 
 
 
-# AUTH_LDAP_SERVER_URI = "ldap://172.28.100.101:389"
-# AUTH_LDAP_BIND_DN = unicode("CN=admin_cy,OU=创研中心,DC=shfang,DC=net","utf8")
-# AUTH_LDAP_BIND_PASSWORD = "Ehouse027="
-# OU=unicode('OU=创研中心,DC=shfang,DC=net', 'utf8')
-# AUTH_LDAP_USER_SEARCH = LDAPSearch(OU, ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)")
-#
-# AUTH_LDAP_USER_ATTR_MAP = {
-#        "first_name": "givenName",
-#        "last_name": "sn",
-#        "email":"mail"
-# }
-#
-# AUTHENTICATION_BACKENDS = (
-#     'django_auth_ldap.backend.LDAPBackend',
-#     'django.contrib.auth.backends.ModelBackend',
-# )
+AUTH_LDAP_SERVER_URI = "ldap://172.28.100.101:389"
+AUTH_LDAP_BIND_DN = unicode("CN=admin_cy,OU=创研中心,DC=shfang,DC=net","utf8")
+AUTH_LDAP_BIND_PASSWORD = "Ehouse027="
+OU=unicode('OU=创研中心,DC=shfang,DC=net', 'utf8')
+AUTH_LDAP_USER_SEARCH = LDAPSearch(OU, ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)")
+
+AUTH_LDAP_USER_ATTR_MAP = {
+       "first_name": "givenName",
+       "last_name": "sn",
+       "email":"mail"
+}
+
+AUTHENTICATION_BACKENDS = (
+    'django_auth_ldap.backend.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 
 # Select 2
@@ -277,14 +277,14 @@ NEVER_REDIS_TIMEOUT=365*24*60*60
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://ce645e80fedd0d5e6b264b3e424bffe0@127.0.0.1:6379/0",
+        "LOCATION": "redis://:cc62601845fc3c66cdbb81915a871605@10.99.69.35:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     'select2': {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://ce645e80fedd0d5e6b264b3e424bffe0@127.0.0.1:6379/1",
+        "LOCATION": "redis://:cc62601845fc3c66cdbb81915a871605@10.99.69.35:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }

@@ -27,7 +27,6 @@ class NameModel(models.Model):
 class UniqueNameDescModel(models.Model):
     name = models.CharField(max_length=80, unique=True)
     description = models.CharField(max_length=255, null=True)
-
     # Meta data for one object.
     creator = models.ForeignKey('auth.user', related_name='%(app_label)s_%(class)s_creator', verbose_name='creator')
     last_modified_by = models.ForeignKey('auth.user', related_name='%(app_label)s_%(class)s_last_modified_by', verbose_name='last modified by')
@@ -86,3 +85,12 @@ class HISTORY_BASE(models.Model):
     class Meta:
         abstract=True
 
+
+class PUBLISH_BASE(models.Model):
+    pass
+    @staticmethod
+    def father():
+        return u'publish'
+
+    class Meta:
+        abstract=True

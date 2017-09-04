@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from abstract.models import CommonModel,UniqueNameDescModel,API_BASE,APPLY_BASE,IDC_BASE,ITEM_BASE,HISTORY_BASE
+from abstract.models import CommonModel,UniqueNameDescModel,API_BASE,APPLY_BASE,IDC_BASE,ITEM_BASE,HISTORY_BASE,PUBLISH_BASE
 # Create your models here.
 
 
@@ -19,22 +19,29 @@ class Ipv4Network(UniqueNameDescModel):
         ordering = ['name', ]
 
 class Machine(CommonModel,IDC_BASE):
-    mark=models.ForeignKey(Ipv4Address,related_name='mark',blank=True,null=True)
-    ips=models.ManyToManyField(Ipv4Address)
-    name=models.CharField(max_length=100)
+    console_ip=models.ForeignKey(Ipv4Address,related_name='console_ip')
+    ipv4=models.ManyToManyField(Ipv4Address,blank=True)
+    cpu=models.CharField(max_length=100,blank=True)
+    kernel=models.CharField(max_length=100,blank=True)
+    cpu_number=models.IntegerField(blank=True)
+    vcpu_number=models.IntegerField(blank=True)
+    cpu_core=models.IntegerField(blank=True)
+    hostname=models.CharField(max_length=100,blank=True)
     memory=models.IntegerField(blank=True)
-    cpu=models.IntegerField(blank=True)
-    disk_info=models.CharField(max_length=200,blank=True)
-    product=models.CharField(max_length=100,verbose_name=u'服务器类型')
-    machine_id=models.CharField(max_length=200,blank=True,null=True)
-    serial=models.CharField(max_length=200,blank=True,null=True)
-    system_id=models.CharField(max_length=50)
-    sys_desc=models.CharField(max_length=50)
-    major_release=models.CharField(max_length=50)
-    idc=models.CharField(max_length=50,default='hz')
+    disk=models.CharField(max_length=100,blank=True)
+    swap=models.CharField(max_length=100,blank=True)
+    product = models.CharField(max_length=100, verbose_name=u'服务器类型', blank=True)
+    selinux = models.CharField(max_length=10, blank=True)
+    distribution=models.CharField(max_length=25, blank=True)
+    distribution_version=models.CharField(max_length=25,blank=True)
+    manufacturer=models.CharField(max_length=25, blank=True)
+    serial = models.CharField(max_length=10, blank=True)
+    status=models.IntegerField(blank=True)
+
+    idc=models.CharField(max_length=50,blank=True)
     company=models.CharField(max_length=50,blank=True)
     def __unicode__(self):
-        return self.name
+        return self.console_ip.name
 
     @staticmethod
     def verbose():

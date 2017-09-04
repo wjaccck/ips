@@ -223,12 +223,12 @@ class Machine_listViewSet(Base_ListViewSet):
             query_list.append(Q(idc=idc))
         try:
             ip=self.request.GET['ip']
-            query_list.append(Q(ips__name__istartswith=ip))
+            query_list.append(Q(ipv4__name__istartswith=ip))
         except:
             pass
         try:
             sys_desc=self.request.GET['sys']
-            query_list.append(Q(sys_desc__istartswith=sys_desc))
+            query_list.append(Q(distribution_version__istartswith=sys_desc))
         except:
             pass
         try:
@@ -355,6 +355,11 @@ class Mysql_ViewSet(Base_ListViewSet):
         try:
             name=self.request.GET['name']
             query_list.append(Q(name__icontains=name))
+        except:
+            pass
+        try:
+            port=self.request.GET['port']
+            query_list.append(Q(port__exact=port))
         except:
             pass
         if query_list:
@@ -1309,7 +1314,7 @@ class DNS_checkView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(DNS_checkView, self).get_context_data(**kwargs)
         try:
-            domain_name=self.request.GET['name']
+            domain_name=self.request.GET['name'].strip()
             import DNS
             s = DNS.Request(name=domain_name, server='10.99.73.5')
             resolve = s.req().answers

@@ -73,20 +73,14 @@
 									 ID
 								</th>
 								<th>
-									 主机名
+									 管理地址
 								</th>
 								<th>
-									 型号
+									 主机名
 								</th>
                                 <th>
 									 系统
 								</th>
-                                <th>
-                                    主版本
-                                </th>
-                                <th>
-                                    release
-                                </th>
                                 <th>
                                     CPU
                                 </th>
@@ -94,16 +88,16 @@
                                     内存
                                 </th>
                                 <th>
-                                    IPV4
+                                    硬盘
                                 </th>
                                 <th>
-                                    IDC
+                                    IPV4
                                 </th>
                                 <th>
                                     创建日期
                                 </th>
                                 <th>
-                                    修改
+                                    动作
                                 </th>
 							</tr>
 							</thead>
@@ -111,18 +105,16 @@
                                 {% for m in object_list  %}
                                     <tr>
                                         <td>{{ m.id }}</td>
-                                        <td>{{ m.name }}</td>
-                                        <td>{{ m.product }}</td>
-                                        <td>{{ m.system_id }}</td>
-                                        <td>{{ m.major_release }}</td>
-                                        <td>{{ m.sys_desc }}</td>
-                                        <td>{{ m.cpu }}</td>
+                                        <td>{{ m.console_ip }}</td>
+                                        <td>{{ m.hostname }}</td>
+                                        <td>{{ m.distribution_version }}</td>
+                                        <td>{{ m.vcpu_number }}</td>
                                         <td>{{ m.memory }}</td>
-                                        <td>{% for n in m.ips.all %}
+                                        <td>{{ m.disk }}</td>
+                                        <td>{% for n in m.ipv4.all %}
                                                 {{ n.name }}<br>
                                             {% endfor %}
                                         </td>
-                                        <td>{{ m.idc }}</td>
                                         <td>{{ m.created_date |date:'Y-m-d H:i:s' }}</td>
                                         <td><a  href="{% url 'machine-update' m.id %} ">修改</a></td>
                                     </tr>
