@@ -9,8 +9,8 @@ from .models import Ipv4Address, Ipv4Network,Machine,Site,Nginx,Type_name,Tech\
 
 
 class MachineSerializer(serializers.HyperlinkedModelSerializer):
-    ips=serializers.SlugRelatedField(queryset=Ipv4Address.objects.all(), many=True,slug_field='name')
-    mark=serializers.SlugRelatedField(queryset=Ipv4Address.objects.all(),slug_field='name')
+    ipv4=serializers.SlugRelatedField(queryset=Ipv4Address.objects.all(), many=True,slug_field='name')
+    console_ip=serializers.SlugRelatedField(queryset=Ipv4Address.objects.all(),slug_field='name')
     class Meta:
         model = Machine
 
