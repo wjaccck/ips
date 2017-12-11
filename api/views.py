@@ -14,7 +14,7 @@ class Machine_ApiViewSet(viewsets.ModelViewSet):
     serializer_class = MachineSerializer
     permission_classes = (permissions.DjangoModelPermissions,)
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, )
-    filter_fields = ('console_ip','ipv4')
+    filter_fields = ('console_ip','ipv4','serial')
     search_fields = ('^console_ip', )
 
 class Site_ApiViewSet(viewsets.ModelViewSet):
