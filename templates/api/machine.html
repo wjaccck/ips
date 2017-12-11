@@ -117,7 +117,9 @@
                                         </td>
                                         <td>{{ m.created_date |date:'Y-m-d H:i:s' }}</td>
                                         <td>
+                                            {% if user.is_superuser %}
                                             <a  href="{% url 'machine-update' m.id %} ">修改</a>
+                                            {% endif %}
                                             <a  href="{% url 'machine-detail' %}?name={{ m.console_ip.name }} ">详情</a>
 
                                         </td>
