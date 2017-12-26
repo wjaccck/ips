@@ -142,7 +142,7 @@ class Get_VersionViewAdmin(BaseViewAdmin):
                     "config_md5":todo_version.config_md5
                 }
                 return HttpResponse(json.dumps(get_result(0,send_data)))
-            except Exception,e:
+            except Exception as e:
                 return HttpResponseBadRequest(json.dumps(get_result(1,str(e))))
         else:
             return HttpResponseBadRequest(json.dumps(get_result(2,'no module send to filter')))

@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^machine/update/(?P<pk>\d+)/$',login_required(views.Machine_updateViewSet.as_view()),name='machine-update'),
     url(r'^machine/create/$',login_required(views.Machine_createViewSet.as_view()),name='machine-create'),
     ###procs
-    url(r'^procs/$', login_required(views.Process_ViewSet.as_view()), name='procs'),
+    url(r'^procs/$', views.Process_ViewSet.as_view(), name='procs'),
     url(r'^machine-proc/$', login_required(views.Machine_proc_ViewSet.as_view()), name='machine-proc'),
 
     ##app
