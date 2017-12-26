@@ -58,19 +58,6 @@ class Process_ViewSet(APIView):
     #     else:
     #         return HttpResponse(json.dumps([{'alias':x.alias} for x in self.model.objects.all()]))
 
-    def post(self, request):
-        try:
-            content = request.POST.get('content')
-        except:
-            content = None
-
-        print(content)
-        if content:
-            return HttpResponse(json.dumps(
-                [{'content': x.content} for x in self.model.objects.filter(content__istartswith=content)]))
-        else:
-            return HttpResponse(json.dumps([{'alias': x.alias} for x in self.model.objects.all()]))
-
 
 def format_response(result):
     logger.info('result: %s' % result)
