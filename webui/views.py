@@ -27,13 +27,12 @@ class Process_ViewSet(APIView):
     model = Machine_procs
     def post(self, request):
         try:
-            content = request.POST.get('data')
-            data=json.loads(content)
-            host=data.get('host')
+            host = self.request.POST.get('host')
+            procs = self.request.POST.get('procs')
             machine=Machine.objects.get(console_ip__name=host)
             Machine_procs.objects.filter(host=machine).delete()
             querysetlist = []
-            for i in data.get('procs'):
+            for i in json.loads(procs):
                 querysetlist.append(Machine_procs(host=machine,
                                                   pid=i.get('pid'),
                                                   name=i.get('name'),
