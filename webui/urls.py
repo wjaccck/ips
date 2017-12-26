@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^machine/create/$',login_required(views.Machine_createViewSet.as_view()),name='machine-create'),
     ###procs
     url(r'^procs/$', login_required(views.Process_ViewSet.as_view()), name='procs'),
-    url(r'^machine-proc/$', login_required(views.Process_ViewSet.as_view()), name='machine-proc'),
+    url(r'^machine-proc/$', login_required(views.Machine_proc_ViewSet.as_view()), name='machine-proc'),
 
     ##app
     url(r'^site/$',login_required(views.Site_ViewSet.as_view()),name='site-list'),
