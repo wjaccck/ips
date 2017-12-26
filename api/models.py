@@ -52,6 +52,10 @@ class Machine_procs(CommonModel,IDC_BASE):
     name=models.CharField(max_length=200)
     username=models.CharField(max_length=50)
 
+    @staticmethod
+    def verbose():
+        return u'服务器进程信息'
+
 ### nginx info
 class Site(CommonModel,API_BASE):
     content=models.CharField(max_length=50,unique=True)
