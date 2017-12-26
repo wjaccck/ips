@@ -20,6 +20,58 @@ from rest_framework.decorators import api_view, permission_classes
 from api.tasks import MissionTask
 from rest_framework.views import APIView
 
+
+class Process_ViewSet(APIView):
+    http_method_names = ['post']
+    permission_classes = (permissions.IsAuthenticated,)
+    model = Machine_procs
+    def post(self, request):
+        try:
+            content = request.POST.get('data')
+            data=json.loads(content)
+            host=data.get('host')
+            machine=Machine.objects.get(console_ip__name=host)
+            Machine_procs.objects.filter(host=machine).delete()
+            querysetlist = []
+            for i in data.get('procs'):
+                querysetlist.append(Machine_procs(host=machine,
+                                                  pid=i.get('pid'),
+                                                  name=i.get('name'),
+                                                  username=i.get('username')
+                                                  )
+                                    )
+            try:
+                Machine_procs.objects.bulk_create(querysetlist)
+                return HttpResponse(json.dumps(get_result(0,'add')))
+            except Exception as e:
+                return HttpResponseBadRequest(json.dumps(get_result(1, str(e))))
+        except:
+            return HttpResponseBadRequest(json.dumps(get_result(1,'no data in the body')))
+    # def get(self,request):
+    #     try:
+    #         host = request.GET.get('host')
+    #     except:
+    #         host=None
+    #
+    #     if host:
+    #         return HttpResponse(json.dumps([{'content':x.content} for x in self.model.objects.filter(content__istartswith=content)]))
+    #     else:
+    #         return HttpResponse(json.dumps([{'alias':x.alias} for x in self.model.objects.all()]))
+
+    def post(self, request):
+        try:
+            content = request.POST.get('content')
+        except:
+            content = None
+
+        print(content)
+        if content:
+            return HttpResponse(json.dumps(
+                [{'content': x.content} for x in self.model.objects.filter(content__istartswith=content)]))
+        else:
+            return HttpResponse(json.dumps([{'alias': x.alias} for x in self.model.objects.all()]))
+
+
 def format_response(result):
     logger.info('result: %s' % result)
     if result:
@@ -194,6 +246,35 @@ class Base_UpdateViewSet(UpdateView):
         context['is_superuser']=self.request.user.is_superuser
         context['active']=self.model.father()
         return context
+
+class Machine_proc_ViewSet(Base_ListViewSet):
+    Machine_procs.objects.all().count()
+    model = Machine_procs
+    template_name = 'api/proc.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        # support search
+        try:
+            keyword = self.request.GET['keyword']
+        except:
+            keyword = None
+        try:
+            host = self.request.GET['host']
+        except:
+            host = None
+
+        if keyword :
+            if host:
+                return self.model.objects.filter(host=Machine.objects.get(console_ip__name=host),name__icontains=keyword)
+            else:
+                return self.model.objects.filter(name__icontains=keyword)
+        else:
+            if host:
+                return self.model.objects.filter(host=Machine.objects.get(console_ip__name=host))
+            else:
+                return self.model.objects.all()
+
 
 class Machine_createViewSet(Base_CreateViewSet):
     model = Machine

@@ -46,6 +46,12 @@ class Machine(CommonModel,IDC_BASE):
     def verbose():
         return u'服务器信息'
 
+class Machine_procs(CommonModel,IDC_BASE):
+    host=models.ForeignKey(Machine,related_name="machine_proc")
+    pid=models.IntegerField()
+    name=models.CharField(max_length=200)
+    username=models.CharField(max_length=50)
+
 ### nginx info
 class Site(CommonModel,API_BASE):
     content=models.CharField(max_length=50,unique=True)
