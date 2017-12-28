@@ -1,4 +1,11 @@
-static/*
 *.pyc
-act.log
-env/*
+*.json
+*.log
+*.zip
+*.sqlite3
+.idea/dataSources.local.xml
+.idea/dataSources.xml
+.idea/dataSources/
+api/migrations/0001_initial.py
+env/
+static/
