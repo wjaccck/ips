@@ -1420,7 +1420,7 @@ class DNS_checkView(TemplateView):
         try:
             domain_name=self.request.GET['name'].strip()
             import DNS
-            s = DNS.Request(name=domain_name, server='10.99.73.5')
+            s = DNS.Request(name=domain_name, server='10.106.71.10')
             resolve = s.req().answers
             all_host=[x.get('data') for x in resolve if x.get('typename')=='A']
             logger.debug(resolve)
@@ -1432,7 +1432,7 @@ class DNS_checkView(TemplateView):
         # context['dns_report'] = all_host
         # context['machine'] = Machine.objects.filter(Q(ips__name__in=all_host))
         if domain_name:
-            context['result'] = [{"domain":domain_name,"data":x,"host":Machine.objects.filter(Q(ips__name=x))} for x in all_host]
+            context['result'] = [{"domain":domain_name,"data":x,"host":Machine.objects.filter(Q(ipv4__name=x))} for x in all_host]
         else:
             context['result']=[]
         context['active']=u'check'
